@@ -108,11 +108,9 @@ export default function SignupPage() {
     }
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      try {
-        await signUp(fd);
-      } catch {
-        setError("Something went wrong. Please try again.");
-      }
+      const result = await signUp(fd);
+      if (result?.error) setError(result.error);
+      // On success signUp() calls redirect() — no return value, navigation is automatic
     });
   };
 

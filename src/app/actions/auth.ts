@@ -15,20 +15,51 @@ export async function signIn(formData: FormData) {
   redirect(next);
 }
 
-export async function signUp(formData: FormData) {
+export async function signUp(
+  formData: FormData
+): Promise<{ error: string } | void> {
   const supabase = await createClient();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) redirect(`/auth/signup?error=${encodeURIComponent(error.message)}`);
+  // ── 1. Create the account ────────────────────────────────────────────────
+  const { data, error: signUpError } = await supabase.auth.signUp({ email, password });
 
+  if (signUpError) {
+    console.error("[signUp] signUp call failed:", {
+      message: signUpError.message,
+      status:  signUpError.status,
+      code:    (signUpError as { code?: string }).code,
+    });
+    return { error: signUpError.message };
+  }
+
+  // Supabase anti-enumeration: when email confirmation is ON and the address is
+  // already registered, it returns a user with an empty identities array instead
+  // of an error, to avoid leaking whether an account exists.
+  if ((data.user?.identities ?? []).length === 0) {
+    console.error("[signUp] duplicate email (empty identities):", email);
+    return { error: "An account with this email already exists. Sign in instead." };
+  }
+
+  // ── 2. Establish session ─────────────────────────────────────────────────
   // When email confirmation is enabled Supabase returns a user but no session,
-  // so the auth cookies are never written and the next page sees no user.
-  // Sign in explicitly to establish the session before redirecting.
+  // so auth cookies are never written and the next page would see no user.
+  // Sign in explicitly so the session is persisted before redirecting.
   if (!data.session) {
+    console.log("[signUp] no session returned — attempting signInWithPassword");
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInError) redirect(`/auth/signup?error=${encodeURIComponent(signInError.message)}`);
+
+    if (signInError) {
+      console.error("[signUp] signInWithPassword failed:", {
+        message: signInError.message,
+        status:  signInError.status,
+        code:    (signInError as { code?: string }).code,
+      });
+      return {
+        error: `Account created but automatic sign-in failed: ${signInError.message}`,
+      };
+    }
   }
 
   redirect("/onboarding");
