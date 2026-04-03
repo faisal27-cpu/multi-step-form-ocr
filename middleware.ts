@@ -33,10 +33,10 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect authenticated users away from auth pages to dashboard
-  if (pathname.startsWith('/auth/')) {
+  // Redirect authenticated users away from login/signup only (not forgot/reset)
+  if (pathname === '/auth/login' || pathname === '/auth/signup') {
     if (user) {
-      return NextResponse.redirect(new URL('/dashboard/intake/new', request.url));
+      return NextResponse.redirect(new URL('/', request.url));
     }
   }
 

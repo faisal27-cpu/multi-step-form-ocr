@@ -8,7 +8,7 @@ export async function signIn(formData: FormData) {
   const supabase = await createClient();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const next = (formData.get("next") as string) || "/dashboard/intake/new";
+  const next = (formData.get("next") as string) || "/";
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) redirect(`/auth/login?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(next)}`);
@@ -71,5 +71,5 @@ export async function saveBusinessProfile(formData: FormData) {
     }
   }
 
-  redirect("/dashboard/intake/new");
+  redirect("/");
 }

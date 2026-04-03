@@ -7,11 +7,18 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/auth/login?next=/dashboard/intake/new");
+
+  // Require onboarding before any dashboard page is accessible
+  const { data: profile } = await supabase
+    .from("business_profiles")
+    .select("id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (!profile) redirect("/onboarding");
 
   return <>{children}</>;
 }

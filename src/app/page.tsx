@@ -2,13 +2,10 @@ import Link from "next/link";
 import { ArrowRight, ScanText, FileCheck2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 
 export default async function LandingPage() {
-  // Authenticated users skip the landing page and go straight to the form
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (user) redirect("/dashboard/intake/new");
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
@@ -16,12 +13,23 @@ export default async function LandingPage() {
       <header className="border-b border-border px-6 py-4 flex items-center justify-between">
         <span className="font-semibold text-sm tracking-tight">IntakeOCR</span>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/auth/login">Sign in</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/auth/signup">Get started</Link>
-          </Button>
+          {user ? (
+            <Button size="sm" asChild>
+              <Link href="/dashboard/intake/new">
+                Start New Intake
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/auth/login">Sign in</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/auth/signup">Get started</Link>
+              </Button>
+            </>
+          )}
         </div>
       </header>
 
@@ -42,15 +50,26 @@ export default async function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
-          <Button size="lg" asChild>
-            <Link href="/auth/signup">
-              Start a submission
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <Link href="/auth/login">Sign in</Link>
-          </Button>
+          {user ? (
+            <Button size="lg" asChild>
+              <Link href="/dashboard/intake/new">
+                Start New Intake
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button size="lg" asChild>
+                <Link href="/auth/signup">
+                  Get started free
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/auth/login">Sign in</Link>
+              </Button>
+            </>
+          )}
         </div>
       </section>
 
