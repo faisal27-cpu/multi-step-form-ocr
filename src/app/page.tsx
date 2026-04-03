@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, ScanText, FileCheck2, ShieldCheck } from "lucide-react";
+import { ArrowRight, ScanText, FileCheck2, ShieldCheck, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { signOut } from "@/app/actions/auth";
 
 export default async function LandingPage() {
   const supabase = await createClient();
@@ -14,19 +15,27 @@ export default async function LandingPage() {
         <span className="font-semibold text-sm tracking-tight">IntakeOCR</span>
         <div className="flex items-center gap-3">
           {user ? (
-            <Button size="sm" asChild>
-              <Link href="/dashboard/intake/new">
-                Start New Intake
-                <ArrowRight className="w-4 h-4 ml-1.5" />
-              </Link>
-            </Button>
+            <>
+              <Button size="sm" asChild>
+                <Link href="/dashboard/intake/new">
+                  Start New Intake
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Link>
+              </Button>
+              <form action={signOut}>
+                <Button type="submit" variant="ghost" size="sm" className="text-muted-foreground">
+                  <LogOut className="w-4 h-4 mr-1.5" />
+                  Sign out
+                </Button>
+              </form>
+            </>
           ) : (
             <>
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/auth/login">Sign in</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/auth/signup">Get started</Link>
+                <Link href="/auth/signup">Get started free</Link>
               </Button>
             </>
           )}
