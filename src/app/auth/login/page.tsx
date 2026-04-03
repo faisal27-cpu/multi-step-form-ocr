@@ -2,22 +2,22 @@
 
 import { Suspense, useState, useTransition } from "react";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, XCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { AuthShell } from "@/components/auth/AuthShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signIn } from "@/app/actions/auth";
 
-function ToggleVisibility({ show, onToggle }: { show: boolean; onToggle: () => void }) {
+const inputBase =
+  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-colors focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed";
+
+function EyeToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-      aria-label={show ? "Hide password" : "Show password"}
       tabIndex={-1}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+      aria-label={show ? "Hide password" : "Show password"}
     >
       {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
     </button>
@@ -27,7 +27,7 @@ function ToggleVisibility({ show, onToggle }: { show: boolean; onToggle: () => v
 function LoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
-  const nextParam = searchParams.get("next") ?? "/dashboard/intake/new";
+  const nextParam = searchParams.get("next") ?? "/";
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(errorParam);
@@ -38,28 +38,33 @@ function LoginForm() {
     setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      try {
-        await signIn(fd);
-      } catch {
-        setError("Invalid email or password.");
-      }
+      try { await signIn(fd); } catch { setError("Invalid email or password."); }
     });
   };
 
   return (
     <>
+      {/* Heading */}
+      <div className="mb-8">
+        <h1 className="font-display text-2xl font-bold text-zinc-900">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-zinc-500">Sign in to your IntakeOCR account.</p>
+      </div>
+
       {error && (
-        <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2 text-center">
+        <div className="mb-4 flex items-start gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2.5 text-sm text-red-600">
+          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
           {error}
-        </p>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="hidden" name="next" value={nextParam} />
 
-        <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-zinc-700 mb-1.5">
+            Email
+          </label>
+          <input
             id="email"
             name="email"
             type="email"
@@ -67,43 +72,57 @@ function LoginForm() {
             autoComplete="email"
             placeholder="you@company.com"
             disabled={isPending}
+            className={inputBase}
           />
         </div>
 
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <label htmlFor="password" className="text-sm font-medium text-zinc-700">
+              Password
+            </label>
             <Link
               href="/auth/forgot-password"
-              className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2 transition-colors"
+              className="text-xs text-zinc-400 hover:text-orange-500 transition-colors"
             >
               Forgot password?
             </Link>
           </div>
           <div className="relative">
-            <Input
+            <input
               id="password"
               name="password"
               type={showPassword ? "text" : "password"}
               required
               autoComplete="current-password"
               placeholder="••••••••"
-              className="pr-10"
+              className={`${inputBase} pr-10`}
               disabled={isPending}
             />
-            <ToggleVisibility show={showPassword} onToggle={() => setShowPassword((v) => !v)} />
+            <EyeToggle show={showPassword} onToggle={() => setShowPassword((v) => !v)} />
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Signing in…" : "Sign in"}
-        </Button>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="mt-2 w-full rounded-md bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {isPending ? (
+            <>
+              <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+              Signing in…
+            </>
+          ) : (
+            "Sign in"
+          )}
+        </button>
       </form>
 
-      <p className="text-sm text-center text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-zinc-500">
         Don&apos;t have an account?{" "}
-        <Link href="/auth/signup" className="text-primary underline underline-offset-2 font-medium">
-          Create one
+        <Link href="/auth/signup" className="font-medium text-orange-500 hover:text-orange-600 transition-colors">
+          Get started free
         </Link>
       </p>
     </>
@@ -112,7 +131,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <AuthShell title="Welcome back" description="Sign in to your IntakeOCR account.">
+    <AuthShell>
       <Suspense>
         <LoginForm />
       </Suspense>
