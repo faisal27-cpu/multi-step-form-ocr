@@ -2,13 +2,24 @@
 
 import { Suspense, useState, useTransition } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, XCircle } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { signIn } from "@/app/actions/auth";
 
-const inputBase =
-  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-colors focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed";
+// ── Shared design tokens ─────────────────────────────────────────────────────
+
+const INPUT =
+  "w-full bg-[#F4F4F5] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed";
+
+const INPUT_ERR = "border-red-400 bg-red-50/40";
+
+const BTN =
+  "w-full h-11 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[15px] rounded-[8px] transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-500/40 disabled:opacity-50 disabled:cursor-not-allowed";
+
+const LABEL = "block text-[13px] font-medium text-[#71717A] mb-1.5";
+
+// ── Sub-components ───────────────────────────────────────────────────────────
 
 function EyeToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) {
   return (
@@ -16,13 +27,15 @@ function EyeToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) 
       type="button"
       onClick={onToggle}
       tabIndex={-1}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-[#71717A] transition-colors"
       aria-label={show ? "Hide password" : "Show password"}
     >
       {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
     </button>
   );
 }
+
+// ── Form ─────────────────────────────────────────────────────────────────────
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -38,7 +51,11 @@ function LoginForm() {
     setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      try { await signIn(fd); } catch { setError("Invalid email or password."); }
+      try {
+        await signIn(fd);
+      } catch {
+        setError("Invalid email or password.");
+      }
     });
   };
 
@@ -46,13 +63,16 @@ function LoginForm() {
     <>
       {/* Heading */}
       <div className="mb-8">
-        <h1 className="font-display text-2xl font-bold text-zinc-900">Welcome back</h1>
-        <p className="mt-1.5 text-sm text-zinc-500">Sign in to your IntakeOCR account.</p>
+        <h1 className="text-[28px] font-bold text-[#0A0A0A] tracking-tight leading-tight">
+          Welcome back
+        </h1>
+        <p className="mt-1.5 text-[14px] text-[#71717A]">
+          Sign in to your IntakeOCR account
+        </p>
       </div>
 
       {error && (
-        <div className="mb-4 flex items-start gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2.5 text-sm text-red-600">
-          <XCircle className="w-4 h-4 mt-0.5 shrink-0" />
+        <div className="mb-5 rounded-[8px] bg-red-50 border border-red-200 px-4 py-3 text-[13px] text-red-600">
           {error}
         </div>
       )}
@@ -60,10 +80,9 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="hidden" name="next" value={nextParam} />
 
+        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-zinc-700 mb-1.5">
-            Email
-          </label>
+          <label htmlFor="email" className={LABEL}>Email</label>
           <input
             id="email"
             name="email"
@@ -72,18 +91,19 @@ function LoginForm() {
             autoComplete="email"
             placeholder="you@company.com"
             disabled={isPending}
-            className={inputBase}
+            className={`${INPUT} ${error ? INPUT_ERR : ""}`}
           />
         </div>
 
+        {/* Password */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-zinc-700">
+            <label htmlFor="password" className="text-[13px] font-medium text-[#71717A]">
               Password
             </label>
             <Link
               href="/auth/forgot-password"
-              className="text-xs text-zinc-400 hover:text-orange-500 transition-colors"
+              className="text-[13px] font-medium text-orange-500 hover:text-orange-600 transition-colors"
             >
               Forgot password?
             </Link>
@@ -96,38 +116,33 @@ function LoginForm() {
               required
               autoComplete="current-password"
               placeholder="••••••••"
-              className={`${inputBase} pr-10`}
               disabled={isPending}
+              className={`${INPUT} pr-10 ${error ? INPUT_ERR : ""}`}
             />
             <EyeToggle show={showPassword} onToggle={() => setShowPassword((v) => !v)} />
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={isPending}
-          className="mt-2 w-full rounded-md bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
+        <button type="submit" disabled={isPending} className={`${BTN} mt-2`}>
           {isPending ? (
-            <>
-              <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-              Signing in…
-            </>
+            <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
           ) : (
             "Sign in"
           )}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-500">
+      <p className="mt-6 text-center text-[13px] text-[#71717A]">
         Don&apos;t have an account?{" "}
-        <Link href="/auth/signup" className="font-medium text-orange-500 hover:text-orange-600 transition-colors">
+        <Link href="/auth/signup" className="font-semibold text-orange-500 hover:text-orange-600 transition-colors">
           Get started free
         </Link>
       </p>
     </>
   );
 }
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function LoginPage() {
   return (

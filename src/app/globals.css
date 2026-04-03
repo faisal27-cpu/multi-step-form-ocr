@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-plus-jakarta);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-plus-jakarta);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -80,7 +80,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
@@ -96,13 +96,23 @@
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(28px); }
+  from { opacity: 0; transform: translateX(32px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-28px); }
+  from { opacity: 0; transform: translateX(-32px); }
   to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-32px); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(32px); }
 }
 
 @keyframes scaleIn {
@@ -115,14 +125,9 @@
   to   { stroke-dashoffset: 0; }
 }
 
-@keyframes slideOutLeft {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(-28px); }
-}
-
-@keyframes slideOutRight {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(28px); }
+@keyframes checkDrawLg {
+  from { stroke-dashoffset: 58; }
+  to   { stroke-dashoffset: 0; }
 }
 
 @layer utilities {
@@ -139,10 +144,16 @@
     animation: bulletFadeIn 0.4s ease-out 0.75s both;
   }
   .animate-slide-in-right {
-    animation: slideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slideInRight 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .animate-slide-in-left {
-    animation: slideInLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: slideInLeft 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-slide-out-left {
+    animation: slideOutLeft 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-slide-out-right {
+    animation: slideOutRight 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .animate-scale-in {
     animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -151,13 +162,11 @@
     stroke-dasharray: 40;
     animation: checkDraw 0.5s ease-out 0.2s both;
   }
-  .animate-slide-out-left {
-    animation: slideOutLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .animate-slide-out-right {
-    animation: slideOutRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  .animate-check-draw-lg {
+    stroke-dasharray: 58;
+    animation: checkDrawLg 0.55s ease-out 0.3s both;
   }
   .font-display {
-    font-family: var(--font-bricolage), var(--font-geist-sans), sans-serif;
+    font-family: var(--font-plus-jakarta), ui-sans-serif, sans-serif;
   }
 }
