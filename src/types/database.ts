@@ -68,6 +68,39 @@ export interface Database {
         };
         Relationships: [];
       };
+      business_profiles: {
+        Row: {
+          id: string;
+          user_id: string;
+          company_name: string;
+          industry: 'healthcare' | 'legal' | 'finance' | 'hr' | 'government' | 'other';
+          company_size: '1-10' | '11-50' | '51-200' | '200+';
+          job_title: string;
+          company_website: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          company_name: string;
+          industry: 'healthcare' | 'legal' | 'finance' | 'hr' | 'government' | 'other';
+          company_size: '1-10' | '11-50' | '51-200' | '200+';
+          job_title: string;
+          company_website?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          company_name?: string;
+          industry?: 'healthcare' | 'legal' | 'finance' | 'hr' | 'government' | 'other';
+          company_size?: '1-10' | '11-50' | '51-200' | '200+';
+          job_title?: string;
+          company_website?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       intake_submissions: {
         Row: {
           id: string;
