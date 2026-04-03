@@ -20,8 +20,17 @@ export async function signUp(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) redirect(`/auth/signup?error=${encodeURIComponent(error.message)}`);
+
+  // When email confirmation is enabled Supabase returns a user but no session,
+  // so the auth cookies are never written and the next page sees no user.
+  // Sign in explicitly to establish the session before redirecting.
+  if (!data.session) {
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) redirect(`/auth/signup?error=${encodeURIComponent(signInError.message)}`);
+  }
+
   redirect("/onboarding");
 }
 
