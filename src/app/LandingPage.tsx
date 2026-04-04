@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   ScanText, Upload, Sparkles, FileCheck2, ShieldCheck,
   FileText, Lock, LayoutList, Building2, Database,
-  ChevronDown, ArrowRight,
+  ChevronDown, ArrowRight, Check,
 } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -58,67 +58,74 @@ function FadeIn({
 
 function ProductMockup() {
   return (
-    <div className="w-full bg-[#F8F8F8] rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6">
-      {/* Document card */}
-      <div className="relative w-44 shrink-0 bg-white rounded-xl border border-[#E4E4E7] shadow-sm p-4 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
-            <FileText className="w-3 h-3 text-orange-500" />
+    <div className="relative w-full max-w-[400px]">
+      {/* Main card */}
+      <div
+        className="relative bg-white rounded-2xl border border-[#E4E4E7] p-5 overflow-hidden"
+        style={{ boxShadow: "0 0 0 1px rgba(249,115,22,0.08), 0 8px 40px rgba(249,115,22,0.15), 0 2px 12px rgba(0,0,0,0.08)" }}
+      >
+        {/* Scanning badge */}
+        <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 text-orange-600 text-[11px] font-semibold px-2.5 py-1 rounded-full mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+          Scanning document...
+        </div>
+
+        {/* Document preview area */}
+        <div className="relative bg-[#FAFAFA] rounded-xl border border-[#E4E4E7] p-4 mb-4 overflow-hidden">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-5 h-5 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+              <FileText className="w-2.5 h-2.5 text-orange-500" />
+            </div>
+            <div className="h-1.5 w-16 rounded-full bg-[#E4E4E7]" />
+            <div className="h-1.5 w-8 rounded-full bg-[#E4E4E7] ml-auto" />
           </div>
-          <div className="h-2 w-14 rounded-full bg-[#E4E4E7]" />
-        </div>
-        {/* Document lines */}
-        <div className="space-y-2">
-          {[100, 80, 100, 72, 88, 60, 78].map((w, i) => (
-            <div key={i} className="h-1.5 rounded-full bg-[#E4E4E7]" style={{ width: `${w}%` }} />
-          ))}
-        </div>
-        {/* Scanning orange line */}
-        <div
-          className="absolute left-0 right-0 h-[2px] animate-scan-down"
-          style={{
-            background: "linear-gradient(90deg, transparent 0%, #F97316 30%, #F97316 70%, transparent 100%)",
-          }}
-        />
-      </div>
-
-      {/* Arrow */}
-      <div className="flex items-center justify-center text-orange-400 rotate-90 sm:rotate-0">
-        <ArrowRight className="w-5 h-5" strokeWidth={2} />
-      </div>
-
-      {/* Form card */}
-      <div className="w-52 shrink-0 bg-white rounded-xl border border-[#E4E4E7] shadow-sm p-4">
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-md bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
-            <LayoutList className="w-3 h-3 text-orange-500" />
+          <div className="space-y-1.5">
+            {[100, 82, 96, 68, 88, 55, 75, 90].map((w, i) => (
+              <div key={i} className="h-[5px] rounded-full bg-[#E4E4E7]" style={{ width: `${w}%` }} />
+            ))}
           </div>
-          <div className="h-2 w-16 rounded-full bg-[#E4E4E7]" />
+          {/* Scanning line */}
+          <div
+            className="absolute left-0 right-0 h-[2px] animate-scan-down"
+            style={{
+              background: "linear-gradient(90deg, transparent 0%, #F97316 25%, #F97316 75%, transparent 100%)",
+            }}
+          />
         </div>
 
-        {/* Fields with typing animation */}
+        {/* Auto-filled fields */}
         <div className="space-y-2.5">
           {[
-            { label: "Name",    value: "Sarah Mitchell", cls: "animate-type-1" },
-            { label: "Company", value: "Acme Corp",      cls: "animate-type-2" },
-            { label: "Date",    value: "2024-03-15",     cls: "animate-type-3" },
+            { label: "Full name",    value: "Sarah Mitchell", cls: "animate-type-1" },
+            { label: "Company",      value: "Acme Corp",      cls: "animate-type-2" },
+            { label: "Date of birth", value: "1990-03-15",    cls: "animate-type-3" },
           ].map(({ label, value, cls }) => (
             <div key={label}>
-              <div className="h-1.5 w-8 rounded-full bg-[#E4E4E7] mb-1" />
-              <div className="h-7 rounded-md bg-[#F4F4F5] px-2 flex items-center">
-                <span className={`text-[11px] font-medium text-[#0A0A0A] ${cls}`}>
-                  {value}
-                </span>
+              <div className="text-[9px] font-semibold text-[#71717A] uppercase tracking-wider mb-1">{label}</div>
+              <div className="h-8 rounded-lg bg-[#F4F4F5] border border-[#E4E4E7] px-2.5 flex items-center">
+                <span className={`text-[12px] font-medium text-[#0A0A0A] ${cls}`}>{value}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Submit */}
-        <div className="mt-3 h-6 bg-orange-500 rounded-md flex items-center justify-center">
-          <span className="text-[9px] font-bold text-white uppercase tracking-wider">Submit</span>
+        {/* Submit button */}
+        <div className="mt-4 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+          <span className="text-[11px] font-bold text-white uppercase tracking-wider">Submit intake form</span>
+        </div>
+      </div>
+
+      {/* Floating PDF Ready card */}
+      <div
+        className="absolute -bottom-5 -right-4 bg-white rounded-xl border border-[#E4E4E7] shadow-lg px-3.5 py-2.5 flex items-center gap-2.5"
+        style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.10)" }}
+      >
+        <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+          <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />
+        </div>
+        <div>
+          <div className="text-[11px] font-bold text-[#0A0A0A] leading-tight">PDF Ready</div>
+          <div className="text-[10px] text-[#71717A]">intake_2024.pdf</div>
         </div>
       </div>
     </div>
@@ -216,46 +223,87 @@ export function LandingPage({ isAuthenticated }: Props) {
       <div className="h-16" />
 
       {/* ── HERO ────────────────────────────────────────────────────── */}
-      <section className="pt-16 pb-20 px-6 flex flex-col items-center text-center">
-        <FadeIn delay={0} className="flex flex-col items-center gap-6 w-full max-w-[720px]">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 text-orange-600 text-[12px] font-semibold px-3.5 py-1.5 rounded-full">
-            <Sparkles className="w-3 h-3" />
-            Intake automation for modern teams
-          </div>
+      <section className="pt-16 pb-24 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-16">
 
-          {/* Headline */}
-          <h1 className="text-[44px] sm:text-[52px] font-bold tracking-tight leading-[1.1] text-[#0A0A0A]">
-            Your intake forms,<br />filled in seconds
-          </h1>
+          {/* Left — text (55%) */}
+          <FadeIn delay={0} className="flex flex-col gap-6 lg:w-[55%]">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 text-orange-600 text-[12px] font-semibold px-3.5 py-1.5 rounded-full w-fit">
+              <Sparkles className="w-3 h-3" />
+              Intake automation for modern teams
+            </div>
 
-          {/* Sub */}
-          <p className="text-[17px] sm:text-[18px] text-[#71717A] leading-relaxed max-w-[540px]">
-            Upload any document — ID, invoice, or form. Our OCR reads it instantly
-            and pre-fills your intake form. No manual typing. No errors.
-          </p>
+            {/* Headline */}
+            <h1 className="text-[52px] sm:text-[60px] lg:text-[64px] font-extrabold tracking-tight leading-[1.05] text-[#0A0A0A]">
+              Your intake forms,<br />
+              filled in{" "}
+              <span className="relative inline-block">
+                seconds
+                {/* Wavy SVG underline */}
+                <svg
+                  aria-hidden="true"
+                  className="absolute left-0 -bottom-2 w-full"
+                  viewBox="0 0 200 12"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M2 8 C22 2, 42 12, 62 6 C82 0, 102 12, 122 6 C142 0, 162 12, 198 5"
+                    stroke="#F97316"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+            </h1>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-1">
-            <Link
-              href="/auth/signup"
-              className="h-11 px-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[15px] rounded-[8px] transition-colors flex items-center gap-2"
-            >
-              Start for free <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
-              href="#how-it-works"
-              className="h-11 px-6 border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#F4F4F5] font-semibold text-[15px] rounded-[8px] transition-colors flex items-center"
-            >
-              See how it works
-            </a>
-          </div>
+            {/* Sub */}
+            <p className="text-[17px] sm:text-[18px] text-[#71717A] leading-relaxed max-w-[500px]">
+              Upload any document — ID, invoice, or form. Our OCR reads it instantly
+              and pre-fills your intake form. No manual typing. No errors.
+            </p>
 
-          {/* Product mockup */}
-          <div className="w-full mt-6">
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/auth/signup"
+                className="h-11 px-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[15px] rounded-[8px] transition-colors flex items-center gap-2 w-fit"
+              >
+                Start for free <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a
+                href="#how-it-works"
+                className="h-11 px-6 border border-[#E4E4E7] text-[#3F3F46] hover:bg-[#F4F4F5] hover:border-[#D4D4D8] font-semibold text-[15px] rounded-[8px] transition-colors flex items-center w-fit"
+              >
+                See how it works
+              </a>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-col gap-2 mt-1">
+              {[
+                "No document ever leaves your browser",
+                "Auto-fills in seconds — no manual entry",
+                "Instant PDF export on every submission",
+              ].map((text) => (
+                <div key={text} className="flex items-center gap-2.5">
+                  <div className="w-4 h-4 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
+                    <Check className="w-2.5 h-2.5 text-orange-600" strokeWidth={3} />
+                  </div>
+                  <span className="text-[13px] text-[#52525B]">{text}</span>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* Right — mockup (45%) */}
+          <FadeIn delay={120} className="lg:w-[45%] flex items-center justify-center w-full pb-8">
             <ProductMockup />
-          </div>
-        </FadeIn>
+          </FadeIn>
+
+        </div>
       </section>
 
       {/* ── SOCIAL PROOF BAR ────────────────────────────────────────── */}
