@@ -7,7 +7,7 @@ import { Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const INPUT =
-  "w-full bg-[#F4F4F5] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed";
+  "w-full bg-[#F4F4F5] dark:bg-[#1A1A1A] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] dark:text-white placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white dark:focus:bg-[#0A0A0A] disabled:opacity-50 disabled:cursor-not-allowed";
 
 const INPUT_ERR = "border-red-400 bg-red-50/40";
 

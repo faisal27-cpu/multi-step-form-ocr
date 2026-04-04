@@ -33,7 +33,7 @@ const COMPANY_SIZES = [
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const INPUT =
-  "w-full bg-[#F4F4F5] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed";
+  "w-full bg-[#F4F4F5] dark:bg-[#1A1A1A] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] dark:text-white placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white dark:focus:bg-[#0A0A0A] disabled:opacity-50 disabled:cursor-not-allowed";
 
 const BTN =
   "w-full h-11 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[15px] rounded-[8px] transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-500/40 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -133,9 +133,9 @@ export function OnboardingForm() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-[#0A0A0A] flex flex-col">
       {/* Progress bar — very top of page */}
-      <div className="h-[3px] bg-[#F4F4F5] shrink-0">
+      <div className="h-[3px] bg-[#F4F4F5] dark:bg-[#1A1A1A] shrink-0">
         <div
           className="h-full bg-orange-500 transition-[width] duration-500 ease-out"
           style={{ width: progress }}
@@ -143,12 +143,12 @@ export function OnboardingForm() {
       </div>
 
       {/* Header */}
-      <header className="h-14 shrink-0 flex items-center justify-between px-6 border-b border-[#E4E4E7]">
-        <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-[#0A0A0A]">
+      <header className="h-14 shrink-0 flex items-center justify-between px-6 border-b border-[#E4E4E7] dark:border-[#2A2A2A]">
+        <Link href="/" className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-[#0A0A0A] dark:text-white">
           <div className="w-7 h-7 rounded-[8px] bg-orange-500 flex items-center justify-center">
             <ScanText className="w-3.5 h-3.5 text-white" />
           </div>
-          IntakeOCR
+          AUSH Relay
         </Link>
 
         {/* Step indicator — hidden on success screen */}
@@ -171,7 +171,7 @@ export function OnboardingForm() {
             {/* ── Step 1: Set up your workspace ─────────────────────── */}
             {step === 1 && (
               <>
-                <h1 className="text-[26px] font-bold text-[#0A0A0A] tracking-tight leading-tight mb-1.5">
+                <h1 className="text-[26px] font-bold text-[#0A0A0A] dark:text-white tracking-tight leading-tight mb-1.5">
                   Set up your workspace
                 </h1>
                 <p className="text-[14px] text-[#71717A] mb-8 leading-relaxed">
@@ -247,7 +247,7 @@ export function OnboardingForm() {
             {/* ── Step 2: Your role ─────────────────────────────────── */}
             {step === 2 && (
               <>
-                <h1 className="text-[26px] font-bold text-[#0A0A0A] tracking-tight leading-tight mb-1.5">
+                <h1 className="text-[26px] font-bold text-[#0A0A0A] dark:text-white tracking-tight leading-tight mb-1.5">
                   Your role at{" "}
                   <span className="text-orange-500">{companyName}</span>
                 </h1>
@@ -328,7 +328,7 @@ export function OnboardingForm() {
                   </svg>
                 </div>
 
-                <h1 className="text-[30px] font-bold text-[#0A0A0A] tracking-tight leading-tight mb-2">
+                <h1 className="text-[30px] font-bold text-[#0A0A0A] dark:text-white tracking-tight leading-tight mb-2">
                   You&apos;re all set,{" "}
                   <span className="text-orange-500">{companyName}</span>!
                 </h1>
@@ -370,8 +370,8 @@ export function OnboardingForm() {
         </div>
       </main>
 
-      <footer className="h-10 shrink-0 flex items-center justify-center text-[12px] text-[#A1A1AA] border-t border-[#E4E4E7]">
-        &copy; {new Date().getFullYear()} IntakeOCR. All rights reserved.
+      <footer className="h-10 shrink-0 flex items-center justify-center text-[12px] text-[#A1A1AA] border-t border-[#E4E4E7] dark:border-[#2A2A2A]">
+        &copy; {new Date().getFullYear()} AUSH Relay. All rights reserved.
       </footer>
     </div>
   );

@@ -6,7 +6,7 @@ import { AuthCard } from "@/components/auth/AuthCard";
 import { forgotPassword } from "@/app/actions/auth";
 
 const INPUT =
-  "w-full bg-[#F4F4F5] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed";
+  "w-full bg-[#F4F4F5] dark:bg-[#1A1A1A] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] dark:text-white placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white dark:focus:bg-[#0A0A0A] disabled:opacity-50 disabled:cursor-not-allowed";
 
 const BTN =
   "w-full h-11 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-[15px] rounded-[8px] transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-500/40 disabled:opacity-50 disabled:cursor-not-allowed";

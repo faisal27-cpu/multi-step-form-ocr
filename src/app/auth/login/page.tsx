@@ -10,7 +10,7 @@ import { signIn } from "@/app/actions/auth";
 // ── Shared design tokens ─────────────────────────────────────────────────────
 
 const INPUT =
-  "w-full bg-[#F4F4F5] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed";
+  "w-full bg-[#F4F4F5] dark:bg-[#1A1A1A] rounded-[8px] px-4 py-3 text-[15px] text-[#0A0A0A] dark:text-white placeholder:text-[#A1A1AA] border-[1.5px] border-transparent outline-none transition-[background-color,border-color] duration-150 focus:border-orange-500 focus:bg-white dark:focus:bg-[#0A0A0A] disabled:opacity-50 disabled:cursor-not-allowed";
 
 const INPUT_ERR = "border-red-400 bg-red-50/40";
 
@@ -63,11 +63,11 @@ function LoginForm() {
     <>
       {/* Heading */}
       <div className="mb-8">
-        <h1 className="text-[28px] font-bold text-[#0A0A0A] tracking-tight leading-tight">
+        <h1 className="text-[28px] font-bold text-[#0A0A0A] dark:text-white tracking-tight leading-tight">
           Welcome back
         </h1>
         <p className="mt-1.5 text-[14px] text-[#71717A]">
-          Sign in to your IntakeOCR account
+          Sign in to your AUSH Relay account
         </p>
       </div>
 

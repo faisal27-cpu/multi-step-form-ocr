@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
+import { Inter, Syne } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["700", "800"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "IntakeOCR | Intake forms that fill themselves",
+  title: "AUSH Relay | Intake forms that fill themselves",
   description: "Multi-step intake form with client-side document OCR auto-fill",
 };
 
@@ -29,9 +30,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bricolage.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${inter.variable} ${syne.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

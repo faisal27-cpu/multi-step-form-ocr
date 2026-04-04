@@ -31,7 +31,7 @@ export function LeftPanel() {
           <div className="w-8 h-8 rounded-[8px] bg-orange-500 flex items-center justify-center shrink-0">
             <ScanText className="w-4 h-4 text-white" />
           </div>
-          <span className="text-white font-semibold text-[15px] tracking-tight">IntakeOCR</span>
+          <span className="text-white font-semibold text-[15px] tracking-tight">AUSH Relay</span>
         </div>
 
         {/* Hero copy */}
@@ -66,7 +66,7 @@ export function LeftPanel() {
 
         {/* Footer */}
         <p className="text-[#3F3F46] text-xs">
-          &copy; {new Date().getFullYear()} IntakeOCR. All rights reserved.
+          &copy; {new Date().getFullYear()} AUSH Relay. All rights reserved.
         </p>
       </div>
     </div>
