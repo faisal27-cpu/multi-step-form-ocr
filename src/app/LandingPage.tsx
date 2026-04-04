@@ -7,6 +7,7 @@ import {
   FileText, Lock, LayoutList, Building2, Database,
   ChevronDown, ArrowRight, Check,
 } from "lucide-react";
+import { GridDotsBackground } from "@/components/ui/background-components";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -223,6 +224,7 @@ export function LandingPage({ isAuthenticated }: Props) {
       <div className="h-16" />
 
       {/* ── HERO ────────────────────────────────────────────────────── */}
+      <GridDotsBackground className="min-h-0 bg-transparent">
       <section className="pt-16 pb-24 px-6">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-16">
 
@@ -305,6 +307,7 @@ export function LandingPage({ isAuthenticated }: Props) {
 
         </div>
       </section>
+      </GridDotsBackground>
 
       {/* ── SOCIAL PROOF BAR ────────────────────────────────────────── */}
       <FadeIn as="section" className="bg-[#F4F4F5] py-5 px-6">
