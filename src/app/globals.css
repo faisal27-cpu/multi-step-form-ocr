@@ -130,6 +130,18 @@
   to   { stroke-dashoffset: 0; }
 }
 
+@keyframes scanDown {
+  0%   { top: 0%;   opacity: 0; }
+  8%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes typeInField {
+  from { max-width: 0; }
+  to   { max-width: 160px; }
+}
+
 @layer utilities {
   .animate-fade-in-up {
     animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -165,6 +177,30 @@
   .animate-check-draw-lg {
     stroke-dasharray: 58;
     animation: checkDrawLg 0.55s ease-out 0.3s both;
+  }
+  .animate-scan-down {
+    animation: scanDown 2.6s ease-in-out infinite;
+  }
+  .animate-type-1 {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    animation: typeInField 0.55s ease-out 0.7s forwards;
+  }
+  .animate-type-2 {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    animation: typeInField 0.55s ease-out 1.6s forwards;
+  }
+  .animate-type-3 {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    animation: typeInField 0.55s ease-out 2.5s forwards;
   }
   .font-display {
     font-family: var(--font-plus-jakarta), ui-sans-serif, sans-serif;
