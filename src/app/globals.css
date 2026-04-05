@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-display: var(--font-syne);
+  --font-display: var(--font-inter);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -216,9 +216,9 @@
     animation: progressLoop 3s ease-in-out infinite;
   }
   .font-display {
-    font-family: var(--font-syne), ui-sans-serif, sans-serif;
+    font-family: var(--font-inter), ui-sans-serif, sans-serif;
   }
   .font-hero {
-    font-family: var(--font-syne), ui-sans-serif, sans-serif;
+    font-family: 'Cal Sans', sans-serif;
   }
 }
