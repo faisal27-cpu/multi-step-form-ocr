@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, SkipForward } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { DocumentDropZone } from "./DocumentDropZone";
 import { OcrStatusBanner } from "./OcrStatusBanner";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
@@ -25,7 +24,6 @@ export function StepUpload() {
     setOcrProgress(0);
     setProcessing(true);
 
-    // Run upload and OCR in parallel
     const [uploadResult] = await Promise.allSettled([
       uploadFile(file),
       runOcr(file),
@@ -56,7 +54,6 @@ export function StepUpload() {
 
   const runOcr = async (file: File) => {
     try {
-      // Dynamic import keeps Tesseract out of the server bundle
       const { runOcr: tessOcr } = await import("@/lib/ocr/tesseract");
       const result = await tessOcr(file, (pct) => {
         setOcrProgress(pct);
@@ -76,10 +73,11 @@ export function StepUpload() {
   const canAdvance = fileSelected && (ocrStatus === "success" || ocrStatus === "error");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Step header */}
       <div>
-        <h2 className="text-lg font-semibold">Upload your document</h2>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h2 className="text-[18px] font-bold text-[#0A0A0A] dark:text-white">Upload document</h2>
+        <p className="text-[14px] text-[#71717A] dark:text-[#A1A1AA] mt-1">
           Upload a clear image of your ID, invoice, or form. We&apos;ll extract the text automatically.
         </p>
       </div>
@@ -100,27 +98,29 @@ export function StepUpload() {
         <OcrStatusBanner status={ocrStatus} progress={ocrProgress} />
       )}
 
-      <div className="flex items-center justify-between pt-2">
-        <Button
+      {/* Skip link */}
+      <div className="text-center">
+        <button
           type="button"
-          variant="ghost"
-          size="sm"
           onClick={handleSkipOcr}
           disabled={processing}
-          className="text-muted-foreground"
+          className="text-[13px] text-[#A1A1AA] hover:text-[#71717A] dark:hover:text-[#888] transition-colors disabled:opacity-40"
         >
-          <SkipForward className="w-4 h-4 mr-1.5" />
-          Skip OCR — enter manually
-        </Button>
+          Skip OCR — enter manually →
+        </button>
+      </div>
 
-        <Button
+      {/* Next button */}
+      <div className="flex justify-end pt-1">
+        <button
           type="button"
           onClick={() => setStep("personal")}
           disabled={!canAdvance || processing}
+          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
         >
           Next
-          <ArrowRight className="w-4 h-4 ml-1.5" />
-        </Button>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

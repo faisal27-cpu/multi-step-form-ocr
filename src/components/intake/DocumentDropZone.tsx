@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { Upload, FileImage, X } from "lucide-react";
+import { Upload, FileImage, X, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -13,7 +12,7 @@ function validateFile(file: File): string | null {
     return "Only JPEG, PNG, and WEBP images are accepted. PDFs are not supported.";
   }
   if (file.size > MAX_SIZE) {
-    return `File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum size is 10 MB.`;
+    return `File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum is 10 MB.`;
   }
   return null;
 }
@@ -56,7 +55,6 @@ export function DocumentDropZone({ onFile, onClear, isLoading, error }: Props) {
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
-    // Reset input so the same file can be re-selected after removal
     e.target.value = "";
   };
 
@@ -76,45 +74,54 @@ export function DocumentDropZone({ onFile, onClear, isLoading, error }: Props) {
 
   return (
     <div className="space-y-3">
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="sr-only"
+        onChange={onInputChange}
+        disabled={isLoading}
+      />
+
+      {/* Drop zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        onClick={() => !isLoading && !preview && inputRef.current?.click()}
         className={cn(
-          "relative border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center gap-3 transition-all duration-200",
-          !preview && !isLoading && "cursor-pointer hover:border-primary/60 hover:bg-primary/5",
-          dragging && "border-primary bg-primary/10 scale-[1.01]",
-          !dragging && !displayError && "border-border",
-          displayError && "border-destructive/60 bg-destructive/5",
+          "relative rounded-2xl border transition-all duration-200 overflow-hidden",
+          !preview && !isLoading && "cursor-pointer",
+          dragging
+            ? "border-orange-500 bg-orange-50 dark:bg-orange-950/20"
+            : displayError
+              ? "border-red-300 dark:border-red-800 bg-red-50/50 dark:bg-red-950/10"
+              : "border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#111]",
           isLoading && "opacity-60 pointer-events-none"
         )}
+        onClick={() => !isLoading && !preview && inputRef.current?.click()}
       >
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          className="sr-only"
-          onChange={onInputChange}
-          disabled={isLoading}
-        />
-
         {preview ? (
-          <div className="flex items-start gap-4 w-full">
+          /* File selected state */
+          <div className="p-6 flex items-start gap-4">
             <img
               src={preview.url}
               alt="Document preview"
-              className="w-16 h-16 object-cover rounded-lg border border-border shrink-0"
+              className="w-16 h-16 object-cover rounded-xl border border-[#E4E4E7] dark:border-[#2A2A2A] shrink-0"
             />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{preview.name}</p>
-              <p className="text-xs text-muted-foreground">{preview.size}</p>
+            <div className="flex-1 min-w-0 pt-1">
+              <div className="flex items-center gap-2 mb-1">
+                <CheckCircle2 className="w-4 h-4 text-orange-500 shrink-0" />
+                <p className="text-[13px] font-semibold text-[#0A0A0A] dark:text-white truncate">
+                  {preview.name}
+                </p>
+              </div>
+              <p className="text-[12px] text-[#71717A]">{preview.size}</p>
             </div>
             {!isLoading && (
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); clearPreview(); }}
-                className="text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#A1A1AA] hover:text-[#0A0A0A] dark:hover:text-white hover:bg-[#F4F4F5] dark:hover:bg-[#1A1A1A] transition-colors shrink-0"
                 aria-label="Remove file"
               >
                 <X className="w-4 h-4" />
@@ -122,45 +129,46 @@ export function DocumentDropZone({ onFile, onClear, isLoading, error }: Props) {
             )}
           </div>
         ) : (
-          <>
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-              <FileImage className="w-6 h-6 text-muted-foreground" />
+          /* Empty state */
+          <div className="flex flex-col items-center justify-center text-center py-14 px-8 gap-4">
+            {/* Icon */}
+            <div className={cn(
+              "w-16 h-16 rounded-2xl flex items-center justify-center transition-colors",
+              dragging
+                ? "bg-orange-100 dark:bg-orange-950/40"
+                : "bg-[#FFF7ED] dark:bg-orange-950/20"
+            )}>
+              <Upload className="w-8 h-8 text-orange-500" />
             </div>
-            <div className="text-center">
-              <p className="text-sm font-medium">
-                Drop your document here, or{" "}
-                <span className="text-primary underline underline-offset-2">browse</span>
+
+            {/* Text */}
+            <div className="space-y-1.5">
+              <p className="text-[15px] font-semibold text-[#0A0A0A] dark:text-white">
+                {dragging ? "Release to upload" : "Drop your document here"}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                JPEG, PNG, or WEBP · Max 10 MB
+              <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA]">
+                JPEG, PNG or WEBP · Max 10 MB · Images only
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <Upload className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">Images only — PDFs not supported</span>
-            </div>
-          </>
+
+            {/* Select file button */}
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
+              className="mt-1 w-full max-w-[200px] h-10 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors"
+            >
+              Select file
+            </button>
+          </div>
         )}
       </div>
 
+      {/* Error */}
       {displayError && (
-        <p className="text-sm text-destructive flex items-center gap-1.5">
-          <span className="inline-block w-1 h-1 rounded-full bg-destructive shrink-0" />
+        <p className="text-[13px] text-red-600 dark:text-red-400 flex items-start gap-1.5">
+          <span className="inline-block w-1 h-1 rounded-full bg-red-500 shrink-0 mt-1.5" />
           {displayError}
         </p>
-      )}
-
-      {!preview && !displayError && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="w-full"
-          onClick={() => inputRef.current?.click()}
-          disabled={isLoading}
-        >
-          Select file
-        </Button>
       )}
     </div>
   );

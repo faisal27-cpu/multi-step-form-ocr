@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function NewIntakePage() {
   return (
-    <main className="min-h-screen bg-background py-10 px-4">
+    <main className="min-h-screen bg-[#F8F8F8] dark:bg-[#0A0A0A] py-10 px-4">
       <IntakeFormShell />
     </main>
   );

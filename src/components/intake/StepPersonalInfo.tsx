@@ -3,11 +3,29 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { OcrFieldInput } from "./OcrFieldInput";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { step2Schema, type Step2Values } from "@/lib/validations/intake";
+
+function FieldLabel({ htmlFor, children, ocrFilled }: {
+  htmlFor: string;
+  children: React.ReactNode;
+  ocrFilled?: boolean;
+}) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="flex items-center gap-2 text-[13px] font-medium text-[#3F3F46] dark:text-[#A1A1AA] mb-1.5"
+    >
+      {children}
+      {ocrFilled && (
+        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 leading-none">
+          Auto-filled
+        </span>
+      )}
+    </label>
+  );
+}
 
 export function StepPersonalInfo() {
   const { state, ocrResult, updateFields, setStep } = useIntakeForm();
@@ -19,17 +37,16 @@ export function StepPersonalInfo() {
   } = useForm<Step2Values>({
     resolver: zodResolver(step2Schema),
     defaultValues: {
-      fullName: state.fullName,
+      fullName:    state.fullName,
       dateOfBirth: state.dateOfBirth,
-      idNumber: state.idNumber,
-      email: state.email,
-      phone: state.phone,
-      address: state.address,
+      idNumber:    state.idNumber,
+      email:       state.email,
+      phone:       state.phone,
+      address:     state.address,
     },
   });
 
-  const isOcrFilled = (field: string) =>
-    (ocrResult[field]?.confidence ?? 0) > 0;
+  const isOcrFilled = (field: string) => (ocrResult[field]?.confidence ?? 0) > 0;
 
   const onSubmit = (values: Step2Values) => {
     updateFields(values);
@@ -37,21 +54,22 @@ export function StepPersonalInfo() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white dark:bg-[#111] rounded-2xl border border-[#E4E4E7] dark:border-[#2A2A2A] p-8 space-y-6"
+    >
+      {/* Header */}
       <div>
-        <h2 className="text-lg font-semibold">Personal information</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Review and confirm the details below. Fields marked{" "}
-          <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-            OCR
-          </span>{" "}
-          were extracted from your document.
+        <h2 className="text-[18px] font-bold text-[#0A0A0A] dark:text-white">Personal information</h2>
+        <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] mt-1">
+          Review and confirm the details extracted from your document.
         </p>
       </div>
 
+      {/* Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="space-y-1.5">
-          <Label htmlFor="fullName">Full name *</Label>
+        <div>
+          <FieldLabel htmlFor="fullName" ocrFilled={isOcrFilled("fullName")}>Full name *</FieldLabel>
           <OcrFieldInput
             id="fullName"
             placeholder="Jane Smith"
@@ -60,12 +78,12 @@ export function StepPersonalInfo() {
             {...register("fullName")}
           />
           {errors.fullName && (
-            <p className="text-xs text-destructive">{errors.fullName.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.fullName.message}</p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="dateOfBirth">Date of birth *</Label>
+        <div>
+          <FieldLabel htmlFor="dateOfBirth" ocrFilled={isOcrFilled("dateOfBirth")}>Date of birth *</FieldLabel>
           <OcrFieldInput
             id="dateOfBirth"
             type="date"
@@ -74,12 +92,12 @@ export function StepPersonalInfo() {
             {...register("dateOfBirth")}
           />
           {errors.dateOfBirth && (
-            <p className="text-xs text-destructive">{errors.dateOfBirth.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.dateOfBirth.message}</p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="idNumber">ID / document number *</Label>
+        <div>
+          <FieldLabel htmlFor="idNumber" ocrFilled={isOcrFilled("idNumber")}>ID / document number *</FieldLabel>
           <OcrFieldInput
             id="idNumber"
             placeholder="AB123456"
@@ -88,12 +106,12 @@ export function StepPersonalInfo() {
             {...register("idNumber")}
           />
           {errors.idNumber && (
-            <p className="text-xs text-destructive">{errors.idNumber.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.idNumber.message}</p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="email">Email address *</Label>
+        <div>
+          <FieldLabel htmlFor="email" ocrFilled={isOcrFilled("email")}>Email address *</FieldLabel>
           <OcrFieldInput
             id="email"
             type="email"
@@ -103,12 +121,12 @@ export function StepPersonalInfo() {
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-xs text-destructive">{errors.email.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.email.message}</p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="phone">Phone number *</Label>
+        <div>
+          <FieldLabel htmlFor="phone" ocrFilled={isOcrFilled("phone")}>Phone number *</FieldLabel>
           <OcrFieldInput
             id="phone"
             type="tel"
@@ -118,12 +136,12 @@ export function StepPersonalInfo() {
             {...register("phone")}
           />
           {errors.phone && (
-            <p className="text-xs text-destructive">{errors.phone.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.phone.message}</p>
           )}
         </div>
 
-        <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="address">Address *</Label>
+        <div className="sm:col-span-2">
+          <FieldLabel htmlFor="address" ocrFilled={isOcrFilled("address")}>Address *</FieldLabel>
           <OcrFieldInput
             id="address"
             placeholder="123 Main St, City, State 00000"
@@ -132,20 +150,28 @@ export function StepPersonalInfo() {
             {...register("address")}
           />
           {errors.address && (
-            <p className="text-xs text-destructive">{errors.address.message}</p>
+            <p className="text-[12px] text-red-500 mt-1">{errors.address.message}</p>
           )}
         </div>
       </div>
 
+      {/* Navigation */}
       <div className="flex justify-between pt-2">
-        <Button type="button" variant="outline" onClick={() => setStep("upload")}>
-          <ArrowLeft className="w-4 h-4 mr-1.5" />
+        <button
+          type="button"
+          onClick={() => setStep("upload")}
+          className="h-10 px-5 border border-[#E4E4E7] dark:border-[#2A2A2A] text-[#3F3F46] dark:text-[#A1A1AA] hover:bg-[#F4F4F5] dark:hover:bg-[#1A1A1A] text-[14px] font-medium rounded-md transition-colors flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
           Back
-        </Button>
-        <Button type="submit">
+        </button>
+        <button
+          type="submit"
+          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
+        >
           Next
-          <ArrowRight className="w-4 h-4 ml-1.5" />
-        </Button>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </form>
   );

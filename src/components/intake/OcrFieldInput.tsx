@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 interface OcrFieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -11,7 +10,7 @@ interface OcrFieldInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 const OcrFieldInput = forwardRef<HTMLInputElement, OcrFieldInputProps>(
   ({ ocrFilled = false, className, onChange, ...props }, ref) => {
     const [userEdited, setUserEdited] = useState(false);
-    const showOcrBadge = ocrFilled && !userEdited;
+    const showOcrHighlight = ocrFilled && !userEdited;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setUserEdited(true);
@@ -19,22 +18,21 @@ const OcrFieldInput = forwardRef<HTMLInputElement, OcrFieldInputProps>(
     };
 
     return (
-      <div className="relative">
-        <Input
-          ref={ref}
-          onChange={handleChange}
-          className={cn(
-            showOcrBadge && "border-l-4 border-l-blue-400 pl-3",
-            className
-          )}
-          {...props}
-        />
-        {showOcrBadge && (
-          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 pointer-events-none select-none">
-            OCR
-          </span>
+      <input
+        ref={ref}
+        onChange={handleChange}
+        className={cn(
+          "w-full h-11 rounded-md px-4 text-[14px] text-[#0A0A0A] dark:text-white",
+          "bg-[#F4F4F5] dark:bg-[#1A1A1A]",
+          "border border-transparent",
+          "placeholder:text-[#A1A1AA]",
+          "outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/60",
+          "transition-all duration-150",
+          showOcrHighlight && "border-l-2 border-l-orange-400 pl-3.5",
+          className
         )}
-      </div>
+        {...props}
+      />
     );
   }
 );
