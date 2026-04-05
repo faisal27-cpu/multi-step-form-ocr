@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { GridPattern } from "@/components/ui/grid-pattern";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,14 +32,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/cal-sans@1.0.1/index.css"
         />
       </head>
-      <body className="relative min-h-full flex flex-col">
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <GridPattern
-            width={40}
-            height={40}
-            className="stroke-gray-200/70 fill-transparent dark:stroke-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_100%)]"
-          />
-        </div>
+      <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
