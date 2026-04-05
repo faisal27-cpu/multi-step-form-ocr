@@ -33,15 +33,15 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/cal-sans@1.0.1/index.css"
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="relative min-h-full flex flex-col">
+        <div className="fixed inset-0 -z-10 overflow-hidden">
+          <GridPattern
+            width={40}
+            height={40}
+            className="stroke-gray-200/70 fill-transparent dark:stroke-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,white_40%,transparent_100%)]"
+          />
+        </div>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="fixed inset-0 -z-10">
-            <GridPattern
-              width={40}
-              height={40}
-              className="stroke-gray-200/60 fill-gray-200/60 dark:stroke-gray-800/40 dark:fill-gray-800/40 [mask-image:radial-gradient(100%_100%_at_top,white,transparent)]"
-            />
-          </div>
           {children}
         </ThemeProvider>
       </body>
