@@ -35,15 +35,14 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative min-h-screen">
+          <div className="fixed inset-0 -z-10">
             <GridPattern
               width={40}
               height={40}
-              strokeDasharray="0"
-              className="fixed inset-0 -z-10 stroke-gray-200/50 fill-gray-200/50 [mask-image:radial-gradient(100%_100%_at_center,white,transparent)] dark:stroke-gray-800/50 dark:fill-gray-800/50"
+              className="stroke-gray-200/60 fill-gray-200/60 dark:stroke-gray-800/40 dark:fill-gray-800/40 [mask-image:radial-gradient(100%_100%_at_top,white,transparent)]"
             />
-            {children}
           </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
