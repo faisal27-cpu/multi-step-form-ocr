@@ -8,6 +8,8 @@ import {
   FileText, Lock, LayoutList, Building2,
   ChevronDown, ArrowRight, Check, Moon, Sun, Download,
 } from "lucide-react";
+import { motion } from "motion/react";
+import { TestimonialsColumn, testimonials } from "@/components/ui/testimonials-columns-1";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -389,6 +391,35 @@ export function LandingPage({ isAuthenticated }: Props) {
               </div>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ────────────────────────────────────────────── */}
+      <section className="py-24 px-6 bg-[#FAFAFA] dark:bg-[#080808]">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center text-center mb-10"
+          >
+            <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-orange-500 mb-3">
+              Testimonials
+            </span>
+            <h2 className="font-hero text-[36px] sm:text-[40px] font-bold tracking-tight text-[#0A0A0A] dark:text-white">
+              What our users say
+            </h2>
+            <p className="text-[15px] text-[#71717A] dark:text-[#A1A1AA] mt-3 max-w-md">
+              Teams across healthcare, legal, and finance trust AUSH Relay to handle their intake.
+            </p>
+          </motion.div>
+
+          <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[700px] overflow-hidden">
+            <TestimonialsColumn testimonials={testimonials.slice(0, 3)} duration={15} />
+            <TestimonialsColumn testimonials={testimonials.slice(3, 6)} className="hidden md:block" duration={19} />
+            <TestimonialsColumn testimonials={testimonials.slice(6, 9)} className="hidden lg:block" duration={17} />
+          </div>
         </div>
       </section>
 
