@@ -660,39 +660,40 @@ export function LandingPage({ isAuthenticated }: Props) {
             </FadeIn>
             </div>
 
-            {/* ── Card 5 — Built for every industry (half width, dark) ── */}
-            <div style={{ gridArea: "card5", backgroundColor: "#1A1A1A" }}>
+            {/* ── Card 5 — Built for every industry (half width, white) ── */}
+            <div style={{ gridArea: "card5" }}>
             <FadeIn
               delay={250}
-              className="rounded-2xl overflow-hidden p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+              className="rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
             >
-              <div>
-                <h3 className="text-[16px] font-bold text-white mb-2">Built for every industry</h3>
-                <p className="text-[13px] text-[#666] leading-relaxed">
-                  Personalized per company from day one. Your workspace, your rules.
-                </p>
+              {/* Header row */}
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-[16px] font-bold text-[#0A0A0A] dark:text-white mb-1.5">Built for every industry</h3>
+                  <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
+                    Personalized per company from day one.
+                  </p>
+                </div>
+                <span className="shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/50 text-orange-600 whitespace-nowrap">
+                  5 industries
+                </span>
               </div>
 
-              {/* Glowing industry pills */}
-              <div className="flex flex-col gap-2.5 mt-auto">
+              {/* Industry pills */}
+              <div className="flex flex-wrap gap-2 mt-auto">
                 {([
-                  { label: "Healthcare", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)",  text: "rgb(147,197,253)"  },
-                  { label: "Legal",      bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)",  text: "rgb(216,180,254)"  },
-                  { label: "Finance",    bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)",   text: "rgb(134,239,172)"  },
-                  { label: "HR",         bg: "rgba(236,72,153,0.12)",  border: "rgba(236,72,153,0.25)",  text: "rgb(249,168,212)"  },
-                  { label: "Government", bg: "rgba(234,179,8,0.12)",   border: "rgba(234,179,8,0.25)",   text: "rgb(253,224,71)"   },
-                ] as { label: string; bg: string; border: string; text: string }[]).map(({ label, bg, border, text }) => (
-                  <div
+                  { label: "Healthcare", pill: "bg-blue-50   text-blue-700   border border-blue-200"   },
+                  { label: "Legal",      pill: "bg-purple-50 text-purple-700 border border-purple-200" },
+                  { label: "Finance",    pill: "bg-green-50  text-green-700  border border-green-200"  },
+                  { label: "HR",         pill: "bg-pink-50   text-pink-700   border border-pink-200"   },
+                  { label: "Government", pill: "bg-amber-50  text-amber-700  border border-amber-200"  },
+                ] as { label: string; pill: string }[]).map(({ label, pill }) => (
+                  <span
                     key={label}
-                    className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-[13px] font-semibold"
-                    style={{ backgroundColor: bg, border: `1px solid ${border}`, color: text }}
+                    className={`text-[12px] font-semibold px-3 py-1 rounded-full ${pill}`}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: text, boxShadow: `0 0 6px ${text}` }}
-                    />
                     {label}
-                  </div>
+                  </span>
                 ))}
               </div>
             </FadeIn>
