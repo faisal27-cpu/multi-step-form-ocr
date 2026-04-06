@@ -22,13 +22,11 @@ function FadeIn({
   className = "",
   delay = 0,
   as: Tag = "div",
-  style: outerStyle,
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   as?: React.ElementType;
-  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -49,7 +47,6 @@ function FadeIn({
       ref={ref}
       className={className}
       style={{
-        ...outerStyle,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0px)" : "translateY(18px)",
         transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
@@ -447,10 +444,10 @@ export function LandingPage({ isAuthenticated }: Props) {
           >
 
             {/* ── Card 1 — Client-side OCR (full width, dark) ── */}
+            <div style={{ gridArea: "card1" }}>
             <FadeIn
               delay={0}
               className="rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
-              style={{ gridArea: "card1" } as React.CSSProperties}
             >
               <div className="bg-[#0F0F0F] p-10 h-full flex flex-col gap-8">
                 {/* Top row: text left, visual right */}
@@ -523,12 +520,13 @@ export function LandingPage({ isAuthenticated }: Props) {
                 </div>
               </div>
             </FadeIn>
+            </div>
 
             {/* ── Card 2 — Instant PDF (half width) ── */}
+            <div style={{ gridArea: "card2" }}>
             <FadeIn
               delay={100}
               className="group rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
-              style={{ gridArea: "card2" } as React.CSSProperties}
             >
               {/* PDF icon + badge */}
               <div className="flex items-start justify-between">
@@ -572,12 +570,13 @@ export function LandingPage({ isAuthenticated }: Props) {
                 </button>
               </div>
             </FadeIn>
+            </div>
 
             {/* ── Card 3 — Secure by default (half width) ── */}
+            <div style={{ gridArea: "card3" }}>
             <FadeIn
               delay={150}
               className="rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
-              style={{ gridArea: "card3" } as React.CSSProperties}
             >
               {/* Shield with pulsing rings */}
               <div className="relative w-16 h-16">
@@ -614,12 +613,13 @@ export function LandingPage({ isAuthenticated }: Props) {
                 ))}
               </div>
             </FadeIn>
+            </div>
 
             {/* ── Card 4 — Multi-step flow (half width) ── */}
+            <div style={{ gridArea: "card4", backgroundColor: "#FFFBF7" }}>
             <FadeIn
               delay={200}
               className="rounded-2xl overflow-hidden border border-orange-100 dark:border-[#2A2A2A] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
-              style={{ gridArea: "card4", backgroundColor: "#FFFBF7" } as React.CSSProperties}
             >
               <div>
                 <h3 className="text-[16px] font-bold text-[#0A0A0A] mb-2">Guided multi-step forms</h3>
@@ -658,12 +658,13 @@ export function LandingPage({ isAuthenticated }: Props) {
                 ))}
               </div>
             </FadeIn>
+            </div>
 
             {/* ── Card 5 — Built for every industry (half width, dark) ── */}
+            <div style={{ gridArea: "card5", backgroundColor: "#1A1A1A" }}>
             <FadeIn
               delay={250}
               className="rounded-2xl overflow-hidden p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
-              style={{ gridArea: "card5", backgroundColor: "#1A1A1A" } as React.CSSProperties}
             >
               <div>
                 <h3 className="text-[16px] font-bold text-white mb-2">Built for every industry</h3>
@@ -695,6 +696,7 @@ export function LandingPage({ isAuthenticated }: Props) {
                 ))}
               </div>
             </FadeIn>
+            </div>
 
           </div>
         </div>
