@@ -22,11 +22,13 @@ function FadeIn({
   className = "",
   delay = 0,
   as: Tag = "div",
+  style: outerStyle,
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   as?: React.ElementType;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -47,6 +49,7 @@ function FadeIn({
       ref={ref}
       className={className}
       style={{
+        ...outerStyle,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0px)" : "translateY(18px)",
         transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
