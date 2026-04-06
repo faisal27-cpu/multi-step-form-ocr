@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 export default function NewIntakePage() {
   return (
     <>
+      {/* Orange accent bar */}
+      <div className="h-1 w-full bg-orange-500" />
+
       <header className="sticky top-0 z-40 h-14 flex items-center justify-between px-6 bg-white dark:bg-[#0A0A0A] border-b border-[#E4E4E7] dark:border-[#1A1A1A]">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-[7px] bg-orange-500 flex items-center justify-center">
@@ -29,7 +32,7 @@ export default function NewIntakePage() {
         </Link>
       </header>
 
-      <main className="min-h-screen bg-[#F8F8F8] dark:bg-[#0A0A0A] py-10 px-4">
+      <main className="min-h-screen bg-white dark:bg-[#0A0A0A] py-10 px-4">
         <IntakeFormShell />
       </main>
     </>

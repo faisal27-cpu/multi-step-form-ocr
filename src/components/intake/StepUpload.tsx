@@ -73,10 +73,12 @@ export function StepUpload() {
   const canAdvance = fileSelected && (ocrStatus === "success" || ocrStatus === "error");
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Step header */}
       <div>
-        <h2 className="text-[18px] font-bold text-[#0A0A0A] dark:text-white">Upload document</h2>
+        <h2 className="font-hero text-[24px] font-bold text-[#0A0A0A] dark:text-white tracking-tight">
+          Upload document
+        </h2>
         <p className="text-[14px] text-[#71717A] dark:text-[#A1A1AA] mt-1">
           Upload a clear image of your ID, invoice, or form. We&apos;ll extract the text automatically.
         </p>
@@ -106,7 +108,7 @@ export function StepUpload() {
           disabled={processing}
           className="text-[13px] text-[#A1A1AA] hover:text-[#71717A] dark:hover:text-[#888] transition-colors disabled:opacity-40"
         >
-          Skip OCR — enter manually →
+          Skip and enter details manually
         </button>
       </div>
 
@@ -116,7 +118,7 @@ export function StepUpload() {
           type="button"
           onClick={() => setStep("personal")}
           disabled={!canAdvance || processing}
-          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
+          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-all duration-200 flex items-center gap-2 shadow-sm shadow-orange-200/60 disabled:shadow-none"
         >
           Next
           <ArrowRight className="w-4 h-4" />

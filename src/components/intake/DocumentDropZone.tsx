@@ -89,14 +89,15 @@ export function DocumentDropZone({ onFile, onClear, isLoading, error }: Props) {
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
         className={cn(
-          "relative rounded-2xl border transition-all duration-200 overflow-hidden",
+          "relative w-full rounded-2xl transition-all duration-200 overflow-hidden",
           !preview && !isLoading && "cursor-pointer",
-          dragging
-            ? "border-orange-500 bg-orange-50 dark:bg-orange-950/20"
-            : displayError
-              ? "border-red-300 dark:border-red-800 bg-red-50/50 dark:bg-red-950/10"
-              : "border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#111]",
-          isLoading && "opacity-60 pointer-events-none"
+          isLoading && "opacity-60 pointer-events-none",
+          // Border style: dashed default, solid orange on drag, red on error
+          displayError && !dragging
+            ? "border-2 border-red-300 dark:border-red-800 bg-red-50/50 dark:bg-red-950/10"
+            : dragging
+              ? "border-2 border-orange-500 bg-[#FFF7ED] dark:bg-orange-950/20"
+              : "border-2 border-dashed border-[#E4E4E7] dark:border-[#2A2A2A] bg-[#FAFAFA] dark:bg-[#0D0D0D]"
         )}
         onClick={() => !isLoading && !preview && inputRef.current?.click()}
       >
@@ -130,35 +131,43 @@ export function DocumentDropZone({ onFile, onClear, isLoading, error }: Props) {
           </div>
         ) : (
           /* Empty state */
-          <div className="flex flex-col items-center justify-center text-center py-14 px-8 gap-4">
-            {/* Icon */}
+          <div className="flex flex-col items-center justify-center text-center py-16 px-8 gap-5">
+            {/* Dark icon box */}
             <div className={cn(
-              "w-16 h-16 rounded-2xl flex items-center justify-center transition-colors",
-              dragging
-                ? "bg-orange-100 dark:bg-orange-950/40"
-                : "bg-[#FFF7ED] dark:bg-orange-950/20"
+              "w-16 h-16 rounded-xl flex items-center justify-center transition-colors",
+              dragging ? "bg-orange-500" : "bg-[#0F0F0F] dark:bg-[#1A1A1A]"
             )}>
-              <Upload className="w-8 h-8 text-orange-500" />
+              <Upload className="w-7 h-7 text-orange-400" />
             </div>
 
-            {/* Text */}
+            {/* Heading + subtext */}
             <div className="space-y-1.5">
-              <p className="text-[15px] font-semibold text-[#0A0A0A] dark:text-white">
+              <p className="text-[20px] font-bold text-[#0A0A0A] dark:text-white leading-tight">
                 {dragging ? "Release to upload" : "Drop your document here"}
               </p>
-              <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA]">
-                JPEG, PNG or WEBP · Max 10 MB · Images only
+              <p className="text-[14px] text-[#71717A] dark:text-[#A1A1AA]">
+                Supports JPEG, PNG, WEBP · Max 10 MB
               </p>
             </div>
 
-            {/* Select file button */}
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
-              className="mt-1 w-full max-w-[200px] h-10 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors"
-            >
-              Select file
-            </button>
+            {/* Divider */}
+            <div className="flex items-center gap-3 w-full max-w-[240px]">
+              <div className="flex-1 h-px bg-[#E4E4E7] dark:bg-[#2A2A2A]" />
+              <span className="text-[12px] font-medium text-[#A1A1AA]">or</span>
+              <div className="flex-1 h-px bg-[#E4E4E7] dark:bg-[#2A2A2A]" />
+            </div>
+
+            {/* Browse button */}
+            <div className="flex flex-col items-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
+                className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors"
+              >
+                Browse files
+              </button>
+              <p className="text-[12px] text-[#A1A1AA]">Images only — PDFs not supported yet</p>
+            </div>
           </div>
         )}
       </div>
