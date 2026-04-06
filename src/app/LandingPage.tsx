@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import {
   ScanText, Upload, Sparkles, FileCheck2, ShieldCheck,
-  FileText, Lock, LayoutList, Building2,
+  FileText, LayoutList, Building2,
   ChevronDown, ArrowRight, Check, Moon, Sun, Download,
 } from "lucide-react";
 import { motion } from "motion/react";
@@ -432,168 +432,268 @@ export function LandingPage({ isAuthenticated }: Props) {
             </h2>
           </FadeIn>
 
-          <FadeIn delay={80}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            style={{
+              gridTemplateAreas: `
+                "card1 card1"
+                "card2 card3"
+                "card4 card5"
+              `,
+            }}
+          >
 
-              {/* Card 1 — Client-side OCR (spans 2 cols, dark) */}
-              <div className="sm:col-span-2 rounded-2xl overflow-hidden border border-[#1A1A1A] bg-[#0F0F0F] p-8 flex flex-col sm:flex-row items-start gap-8">
-                {/* Animated scan mockup */}
-                <div className="shrink-0 mx-auto sm:mx-0">
-                  <div className="relative w-32 h-44 rounded-xl overflow-hidden border border-[#2A2A2A] bg-[#1A1A1A]">
-                    <div className="p-4 space-y-2.5 mt-1">
-                      <div className="h-1.5 bg-[#333] rounded-sm" style={{ width: "75%" }} />
-                      <div className="h-1.5 bg-[#333] rounded-sm w-full" />
-                      <div className="h-1.5 bg-[#333] rounded-sm" style={{ width: "60%" }} />
-                      <div className="h-1.5 bg-[#333] rounded-sm w-full" />
-                      <div className="h-1.5 bg-[#333] rounded-sm" style={{ width: "85%" }} />
-                      <div className="h-1.5 bg-[#333] rounded-sm" style={{ width: "50%" }} />
-                      <div className="h-1.5 bg-[#333] rounded-sm w-full" />
-                      <div className="h-1.5 bg-[#333] rounded-sm" style={{ width: "70%" }} />
-                    </div>
-                    {/* Scanning line */}
-                    <div
-                      className="absolute inset-x-0 h-0.5 animate-scan-down pointer-events-none"
-                      style={{
-                        background: "linear-gradient(90deg, transparent, #F97316, transparent)",
-                        boxShadow: "0 0 10px 3px rgba(249,115,22,0.45)",
-                        top: 0,
-                      }}
-                    />
+            {/* ── Card 1 — Client-side OCR (full width, dark) ── */}
+            <FadeIn
+              delay={0}
+              className="rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+              style={{ gridArea: "card1" } as React.CSSProperties}
+            >
+              <div className="bg-[#0F0F0F] p-10 h-full flex flex-col gap-8">
+                {/* Top row: text left, visual right */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                  {/* Text */}
+                  <div className="flex-1 flex flex-col gap-4">
+                    <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-orange-500">
+                      Privacy first
+                    </span>
+                    <h3 className="font-hero text-[26px] sm:text-[30px] font-bold text-white leading-tight">
+                      Your documents never leave your browser
+                    </h3>
+                    <p className="text-[14px] text-[#A1A1AA] leading-relaxed max-w-md">
+                      OCR processing happens 100% client-side using Tesseract.js.
+                      Zero server uploads. Zero data exposure. Full privacy by design.
+                    </p>
                   </div>
-                  {/* Extracting badge */}
-                  <div className="mt-3 inline-flex items-center gap-1.5 bg-orange-950/40 border border-orange-900/50 text-orange-400 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-                    Extracting fields…
+
+                  {/* Scan visual */}
+                  <div className="shrink-0 flex flex-col items-center gap-3">
+                    <div
+                      className="relative w-36 h-48 rounded-2xl overflow-hidden border border-[#2A2A2A] bg-[#1A1A1A]"
+                      style={{ boxShadow: "0 0 40px rgba(249,115,22,0.12)" }}
+                    >
+                      {/* Document lines */}
+                      <div className="p-5 space-y-2.5 mt-2">
+                        {[75, 100, 55, 100, 80, 45, 100, 65, 88].map((w, i) => (
+                          <div
+                            key={i}
+                            className="h-1.5 rounded-sm"
+                            style={{ width: `${w}%`, backgroundColor: i % 3 === 0 ? "#3A3A3A" : "#2A2A2A" }}
+                          />
+                        ))}
+                      </div>
+                      {/* Scan line */}
+                      <div
+                        className="absolute inset-x-0 h-0.5 animate-scan-down pointer-events-none"
+                        style={{
+                          background: "linear-gradient(90deg, transparent 0%, #F97316 40%, #FB923C 50%, #F97316 60%, transparent 100%)",
+                          boxShadow: "0 0 14px 5px rgba(249,115,22,0.5)",
+                          top: 0,
+                        }}
+                      />
+                      {/* Orange glow overlay */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: "radial-gradient(ellipse at center 60%, rgba(249,115,22,0.04), transparent 70%)" }}
+                      />
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 bg-orange-950/40 border border-orange-900/50 text-orange-400 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                      Extracting fields…
+                    </div>
                   </div>
                 </div>
-                {/* Text */}
-                <div className="flex flex-col gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-orange-950/40 border border-orange-900/40 flex items-center justify-center">
-                    <ShieldCheck className="w-5 h-5 text-orange-400" />
-                  </div>
-                  <h3 className="text-[20px] font-bold text-white">Client-side OCR</h3>
-                  <p className="text-[14px] text-[#A1A1AA] leading-relaxed max-w-md">
-                    Your documents never leave your browser. Tesseract.js runs entirely in a Web Worker —
-                    zero server uploads during OCR processing. Full privacy by design.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {["JPEG", "PNG", "WEBP"].map((fmt) => (
-                      <span key={fmt} className="text-[11px] font-semibold text-[#666] bg-[#1A1A1A] border border-[#2A2A2A] px-2.5 py-1 rounded-md">
-                        {fmt}
-                      </span>
-                    ))}
-                  </div>
+
+                {/* Bottom mini-stats row */}
+                <div className="flex flex-wrap gap-6 pt-6 border-t border-[#1A1A1A]">
+                  {[
+                    { value: "0 uploads",    label: "to any server" },
+                    { value: "100% local",   label: "processing"    },
+                    { value: "Tesseract.js", label: "powered"       },
+                  ].map(({ value, label }) => (
+                    <div key={value} className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
+                      <span className="text-[13px] font-semibold text-white">{value}</span>
+                      <span className="text-[12px] text-[#555]">{label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
+            </FadeIn>
 
-              {/* Card 2 — Instant PDF */}
-              <div className="group rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7">
-                <div className="relative w-14 h-16 mb-5">
-                  <div className="w-12 h-14 rounded-lg border-2 border-[#E4E4E7] dark:border-[#2A2A2A] bg-[#FAFAFA] dark:bg-[#1A1A1A] flex flex-col items-center justify-center gap-1">
+            {/* ── Card 2 — Instant PDF (half width) ── */}
+            <FadeIn
+              delay={100}
+              className="group rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
+              style={{ gridArea: "card2" } as React.CSSProperties}
+            >
+              {/* PDF icon + badge */}
+              <div className="flex items-start justify-between">
+                <div className="relative w-14 h-16">
+                  <div className="w-12 h-14 rounded-xl border border-[#E4E4E7] dark:border-[#2A2A2A] bg-[#FAFAFA] dark:bg-[#1A1A1A] flex flex-col items-center justify-center gap-1">
                     <FileText className="w-5 h-5 text-orange-500" />
-                    <span className="text-[9px] font-black text-orange-500 tracking-wider">PDF</span>
+                    <span className="text-[9px] font-black text-orange-500 tracking-widest">PDF</span>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center transition-transform duration-300 group-hover:translate-y-1">
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-200 dark:shadow-orange-900/40 transition-transform duration-300 group-hover:translate-y-1">
                     <Download className="w-3 h-3 text-white" />
                   </div>
                 </div>
+                {/* PDF Ready badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: 8, scale: 0.85 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.6, type: "spring", stiffness: 180, damping: 14 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-1.5 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50 text-green-600 dark:text-green-400 text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                  PDF Ready ✓
+                </motion.div>
+              </div>
+
+              <div className="flex-1">
                 <h3 className="text-[16px] font-bold text-[#0A0A0A] dark:text-white mb-2">Instant PDF generation</h3>
                 <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
                   Every completed submission generates a clean, downloadable PDF summary using pdf-lib — no external service needed.
                 </p>
               </div>
 
-              {/* Card 3 — Secure by default */}
-              <div className="rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7">
-                <div className="relative w-12 h-12 mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-950/30 border border-orange-100 dark:border-orange-900/40 flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-orange-500" />
-                  </div>
-                  {/* Pulse ring */}
-                  <div className="absolute inset-0 rounded-xl border-2 border-orange-300/40 animate-ping" style={{ animationDuration: "2s" }} />
+              {/* Animated download button */}
+              <div className="mt-auto">
+                <button
+                  className="w-full h-9 rounded-lg border border-[#E4E4E7] dark:border-[#2A2A2A] text-[13px] font-medium text-[#3F3F46] dark:text-[#A1A1AA] flex items-center justify-center gap-2 transition-all duration-200 group-hover:border-orange-300 group-hover:text-orange-500 group-hover:bg-orange-50 dark:group-hover:bg-orange-950/10"
+                  tabIndex={-1}
+                >
+                  <Download className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
+                  Download PDF
+                </button>
+              </div>
+            </FadeIn>
+
+            {/* ── Card 3 — Secure by default (half width) ── */}
+            <FadeIn
+              delay={150}
+              className="rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
+              style={{ gridArea: "card3" } as React.CSSProperties}
+            >
+              {/* Shield with pulsing rings */}
+              <div className="relative w-16 h-16">
+                <div
+                  className="absolute inset-0 rounded-full border border-orange-300/30 animate-ping"
+                  style={{ animationDuration: "2s" }}
+                />
+                <div
+                  className="absolute inset-[-6px] rounded-full border border-orange-200/20 animate-ping"
+                  style={{ animationDuration: "2.6s", animationDelay: "0.4s" }}
+                />
+                <div className="w-16 h-16 rounded-full bg-orange-50 dark:bg-orange-950/30 border border-orange-100 dark:border-orange-900/40 flex items-center justify-center relative z-10">
+                  <ShieldCheck className="w-6 h-6 text-orange-500" />
                 </div>
+              </div>
+
+              <div className="flex-1">
                 <h3 className="text-[16px] font-bold text-[#0A0A0A] dark:text-white mb-2">Secure by default</h3>
                 <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
-                  Row Level Security enforced on every Supabase table. Your data is yours alone — other users can never access your submissions.
+                  Row Level Security enforced on every table. Your data is yours alone.
                 </p>
               </div>
 
-              {/* Card 4 — Multi-step flow (spans 2 cols) */}
-              <div className="sm:col-span-2 rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D] p-7">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                  <div className="flex-1">
-                    <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/30 border border-orange-100 dark:border-orange-900/40 flex items-center justify-center mb-4">
-                      <LayoutList className="w-5 h-5 text-orange-500" />
-                    </div>
-                    <h3 className="text-[16px] font-bold text-[#0A0A0A] dark:text-white mb-2">Multi-step form flow</h3>
-                    <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] leading-relaxed max-w-sm">
-                      Guide users through complex forms without overwhelm. A structured four-step process with progress tracking.
-                    </p>
-                  </div>
-                  {/* Step indicator visual */}
-                  <div className="flex items-center gap-2 shrink-0">
-                    {(["Upload", "Info", "Details", "Review"] as const).map((label, i) => (
-                      <div key={label} className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1.5">
-                          <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold border-2 transition-all ${
-                              i === 0
-                                ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-200 dark:shadow-orange-900/30"
-                                : "bg-white dark:bg-[#1A1A1A] border-[#E4E4E7] dark:border-[#2A2A2A] text-[#A1A1AA]"
-                            }`}
-                          >
-                            {i + 1}
-                          </div>
-                          <span className={`text-[10px] font-medium whitespace-nowrap ${i === 0 ? "text-orange-500" : "text-[#A1A1AA]"}`}>
-                            {label}
-                          </span>
-                        </div>
-                        {i < 3 && (
-                          <div className="w-6 sm:w-10 h-[1px] bg-[#E4E4E7] dark:bg-[#2A2A2A] mb-5" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {/* Security badges */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "RLS Enabled", color: "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-900/40" },
+                  { label: "Encrypted",   color: "bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/40"   },
+                  { label: "Zero Trust",  color: "bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-900/40" },
+                ].map(({ label, color }) => (
+                  <span key={label} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${color}`}>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </FadeIn>
+
+            {/* ── Card 4 — Multi-step flow (half width) ── */}
+            <FadeIn
+              delay={200}
+              className="rounded-2xl overflow-hidden border border-orange-100 dark:border-[#2A2A2A] p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
+              style={{ gridArea: "card4", backgroundColor: "#FFFBF7" } as React.CSSProperties}
+            >
+              <div>
+                <h3 className="text-[16px] font-bold text-[#0A0A0A] mb-2">Guided multi-step forms</h3>
+                <p className="text-[13px] text-[#71717A] leading-relaxed">
+                  Break complex intake into manageable steps. Users always know where they are.
+                </p>
               </div>
 
-              {/* Card 5 — Built for business (spans 2 cols) */}
-              <div
-                className="sm:col-span-2 rounded-2xl overflow-hidden border border-[#E4E4E7] dark:border-[#2A2A2A] p-7"
-                style={{ background: "linear-gradient(135deg, #ffffff 0%, #FFF7ED 100%)" }}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                  <div className="flex-1">
-                    <div className="w-10 h-10 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center mb-4">
-                      <Building2 className="w-5 h-5 text-orange-500" />
+              {/* Horizontal step pills */}
+              <div className="flex items-center gap-2 mt-auto flex-wrap">
+                {([
+                  { num: 1, label: "Upload",  active: true  },
+                  { num: 2, label: "Info",    active: false },
+                  { num: 3, label: "Details", active: false },
+                  { num: 4, label: "Review",  active: false },
+                ] as { num: number; label: string; active: boolean }[]).map(({ num, label, active }, i, arr) => (
+                  <div key={label} className="flex items-center gap-2">
+                    <div
+                      className={`flex flex-col items-center gap-0.5 px-4 py-2.5 rounded-xl border transition-all ${
+                        active
+                          ? "bg-orange-500 border-orange-500 shadow-md shadow-orange-200/60"
+                          : "bg-white border-[#E4E4E7]"
+                      }`}
+                    >
+                      <span className={`text-[20px] font-black leading-none ${active ? "text-white" : "text-[#D4D4D8]"}`}>
+                        {num}
+                      </span>
+                      <span className={`text-[9px] font-bold uppercase tracking-widest ${active ? "text-white/80" : "text-[#A1A1AA]"}`}>
+                        {label}
+                      </span>
                     </div>
-                    <h3 className="text-[16px] font-bold text-[#0A0A0A] mb-2">Built for business</h3>
-                    <p className="text-[13px] text-[#71717A] leading-relaxed max-w-sm">
-                      Personalized per company. Every team gets their own intake workspace, tailored to industry and company size.
-                    </p>
+                    {i < arr.length - 1 && (
+                      <ArrowRight className={`w-3.5 h-3.5 shrink-0 ${active ? "text-orange-400" : "text-[#D4D4D8]"}`} />
+                    )}
                   </div>
-                  {/* Industry placeholder circles */}
-                  <div className="flex items-center gap-4 flex-wrap shrink-0">
-                    {[
-                      { label: "Healthcare", abbr: "HC", bg: "bg-blue-100",   text: "text-blue-600"   },
-                      { label: "Legal",      abbr: "LG", bg: "bg-purple-100", text: "text-purple-600" },
-                      { label: "Finance",    abbr: "FN", bg: "bg-green-100",  text: "text-green-600"  },
-                      { label: "HR",         abbr: "HR", bg: "bg-pink-100",   text: "text-pink-600"   },
-                      { label: "Gov",        abbr: "GV", bg: "bg-orange-100", text: "text-orange-600" },
-                    ].map(({ label, abbr, bg, text }) => (
-                      <div key={label} className="flex flex-col items-center gap-1.5">
-                        <div className={`w-11 h-11 rounded-full ${bg} border border-white shadow-sm flex items-center justify-center text-[11px] font-black ${text}`}>
-                          {abbr}
-                        </div>
-                        <span className="text-[10px] font-medium text-[#71717A] whitespace-nowrap">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
+              </div>
+            </FadeIn>
+
+            {/* ── Card 5 — Built for every industry (half width, dark) ── */}
+            <FadeIn
+              delay={250}
+              className="rounded-2xl overflow-hidden p-7 flex flex-col gap-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-2xl"
+              style={{ gridArea: "card5", backgroundColor: "#1A1A1A" } as React.CSSProperties}
+            >
+              <div>
+                <h3 className="text-[16px] font-bold text-white mb-2">Built for every industry</h3>
+                <p className="text-[13px] text-[#666] leading-relaxed">
+                  Personalized per company from day one. Your workspace, your rules.
+                </p>
               </div>
 
-            </div>
-          </FadeIn>
+              {/* Glowing industry pills */}
+              <div className="flex flex-col gap-2.5 mt-auto">
+                {([
+                  { label: "Healthcare", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)",  text: "rgb(147,197,253)"  },
+                  { label: "Legal",      bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)",  text: "rgb(216,180,254)"  },
+                  { label: "Finance",    bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)",   text: "rgb(134,239,172)"  },
+                  { label: "HR",         bg: "rgba(236,72,153,0.12)",  border: "rgba(236,72,153,0.25)",  text: "rgb(249,168,212)"  },
+                  { label: "Government", bg: "rgba(234,179,8,0.12)",   border: "rgba(234,179,8,0.25)",   text: "rgb(253,224,71)"   },
+                ] as { label: string; bg: string; border: string; text: string }[]).map(({ label, bg, border, text }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-[13px] font-semibold"
+                    style={{ backgroundColor: bg, border: `1px solid ${border}`, color: text }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ backgroundColor: text, boxShadow: `0 0 6px ${text}` }}
+                    />
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+
+          </div>
         </div>
       </section>
 
