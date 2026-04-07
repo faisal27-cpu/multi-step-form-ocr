@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { FloatingNavMenu } from "@/components/dashboard/FloatingNavMenu";
 
 export default async function DashboardLayout({
   children,
@@ -20,5 +21,10 @@ export default async function DashboardLayout({
 
   if (!profile) redirect("/onboarding");
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <FloatingNavMenu />
+    </>
+  );
 }
