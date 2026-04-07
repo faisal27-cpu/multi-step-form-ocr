@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IntakeFormProvider } from "@/context/IntakeFormContext";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
+import { IntakeLeftPanel } from "./IntakeLeftPanel";
 import { StepIndicator } from "./StepIndicator";
 import { StepUpload } from "./StepUpload";
 import { StepPersonalInfo } from "./StepPersonalInfo";
@@ -27,28 +28,51 @@ function IntakeFormInner() {
   };
 
   return (
-    <div className="w-full max-w-[680px] mx-auto space-y-8">
-      {step !== "success" && <StepIndicator currentStep={step} />}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {renderStep()}
-        </motion.div>
-      </AnimatePresence>
+    <div className="flex min-h-[calc(100vh-4px)]">
+      {/* Left panel — sticky sidebar */}
+      <div className="hidden lg:block w-[38%] shrink-0">
+        <div className="sticky top-0 h-screen">
+          <IntakeLeftPanel currentStep={step} />
+        </div>
+      </div>
+
+      {/* Right panel */}
+      <div className="flex-1 bg-white dark:bg-[#0A0A0A]">
+        <div className="w-full max-w-[560px] mx-auto px-6 lg:px-10 py-10">
+          {step !== "success" && (
+            <div className="mb-8">
+              <StepIndicator currentStep={step} />
+            </div>
+          )}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {renderStep()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }
 
 function ShellFallback() {
   return (
-    <div className="w-full max-w-[680px] mx-auto space-y-8">
-      <Skeleton className="h-14 w-full rounded-xl" />
-      <Skeleton className="h-72 w-full rounded-2xl" />
+    <div className="flex min-h-[calc(100vh-4px)]">
+      <div className="hidden lg:block w-[38%] bg-[#0F0F0F] shrink-0" />
+      <div className="flex-1 bg-white dark:bg-[#0A0A0A] px-6 lg:px-10 py-10">
+        <div className="max-w-[560px] space-y-6">
+          <Skeleton className="h-1.5 w-full rounded-full" />
+          <Skeleton className="h-4 w-48 rounded" />
+          <Skeleton className="h-8 w-72 rounded" />
+          <Skeleton className="h-56 w-full rounded-2xl" />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Loader2, FileDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { toast } from "sonner";
 
@@ -14,7 +14,7 @@ function formatDate(raw: string): string {
 
 const CATEGORY_LABELS: Record<string, string> = {
   employment: "Employment",
-  financial:  "Financial",
+  financial:  "Finance",
   medical:    "Medical",
   legal:      "Legal",
   other:      "Other",
@@ -30,9 +30,9 @@ function ReviewSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white dark:bg-[#111] rounded-2xl border border-[#E4E4E7] dark:border-[#2A2A2A] p-6">
-      <div className="flex items-center justify-between mb-5">
-        <h3 className="text-[14px] font-semibold text-[#0A0A0A] dark:text-white">{title}</h3>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[#A1A1AA]">{title}</h3>
         <button
           type="button"
           onClick={onEdit}
@@ -41,7 +41,7 @@ function ReviewSection({
           Edit →
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pb-6 border-b border-[#F4F4F5] dark:border-[#1A1A1A]">
         {children}
       </div>
     </div>
@@ -51,9 +51,7 @@ function ReviewSection({
 function ReviewField({ label, value, fullWidth }: { label: string; value: string; fullWidth?: boolean }) {
   return (
     <div className={fullWidth ? "sm:col-span-2" : ""}>
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-[#A1A1AA] dark:text-[#666] mb-0.5">
-        {label}
-      </p>
+      <p className="text-[11px] font-medium text-[#A1A1AA] dark:text-[#666] mb-0.5">{label}</p>
       <p className="text-[14px] font-semibold text-[#0A0A0A] dark:text-white break-words">
         {value || "—"}
       </p>
@@ -124,34 +122,37 @@ export function StepReview() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-2">
-        <h2 className="text-[18px] font-bold text-[#0A0A0A] dark:text-white">Review your submission</h2>
-        <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] mt-1">
-          Check all details before submitting. Click Edit to make changes.
+      <div>
+        <h2 className="font-hero text-[24px] font-bold text-[#0A0A0A] dark:text-white tracking-tight">
+          Review your submission
+        </h2>
+        <p className="text-[15px] text-[#71717A] dark:text-[#A1A1AA] mt-1.5">
+          Everything look right? Submit to generate your PDF.
         </p>
       </div>
 
-      {/* Personal information */}
-      <ReviewSection title="Personal information" onEdit={() => setStep("personal")}>
-        <ReviewField label="Full name"           value={state.fullName}            />
-        <ReviewField label="Date of birth"       value={formatDate(state.dateOfBirth)} />
-        <ReviewField label="ID / document no."   value={state.idNumber}            />
-        <ReviewField label="Email"               value={state.email}               />
-        <ReviewField label="Phone"               value={state.phone}               />
-        <ReviewField label="Address"             value={state.address} fullWidth   />
-      </ReviewSection>
+      {/* Sections */}
+      <div className="space-y-6">
+        <ReviewSection title="Personal information" onEdit={() => setStep("personal")}>
+          <ReviewField label="Full name"          value={state.fullName}                />
+          <ReviewField label="Date of birth"      value={formatDate(state.dateOfBirth)} />
+          <ReviewField label="ID / document no."  value={state.idNumber}                />
+          <ReviewField label="Email"              value={state.email}                   />
+          <ReviewField label="Phone"              value={state.phone}                   />
+          <ReviewField label="Address"            value={state.address}  fullWidth      />
+        </ReviewSection>
 
-      {/* Additional details */}
-      <ReviewSection title="Additional details" onEdit={() => setStep("details")}>
-        <ReviewField label="Category"         value={CATEGORY_LABELS[state.submissionCategory] ?? state.submissionCategory} />
-        <ReviewField label="Reference number" value={state.referenceNumber} />
-        <ReviewField label="Notes"            value={state.notes} fullWidth />
-      </ReviewSection>
+        <ReviewSection title="Additional details" onEdit={() => setStep("details")}>
+          <ReviewField label="Category"         value={CATEGORY_LABELS[state.submissionCategory] ?? state.submissionCategory} />
+          <ReviewField label="Reference number" value={state.referenceNumber} />
+          <ReviewField label="Notes"            value={state.notes} fullWidth />
+        </ReviewSection>
+      </div>
 
       {/* Submit */}
-      <div className="pt-2 space-y-3">
+      <div className="space-y-3 pt-2">
         <button
           type="button"
           onClick={handleSubmit}
@@ -165,25 +166,25 @@ export function StepReview() {
             </>
           ) : (
             <>
-              <FileDown className="w-4 h-4" />
               Submit &amp; Generate PDF
+              <ArrowRight className="w-4 h-4" />
             </>
           )}
         </button>
         <p className="text-center text-[12px] text-[#A1A1AA]">
-          A PDF will be generated and saved to your account
+          📄 A PDF will be saved to your account
         </p>
       </div>
 
       {/* Back */}
-      <div className="flex justify-start pt-1">
+      <div className="flex justify-start">
         <button
           type="button"
           onClick={() => setStep("details")}
           disabled={submitting}
-          className="h-9 px-4 border border-[#E4E4E7] dark:border-[#2A2A2A] text-[#3F3F46] dark:text-[#A1A1AA] hover:bg-[#F4F4F5] dark:hover:bg-[#1A1A1A] text-[13px] font-medium rounded-md transition-colors flex items-center gap-2 disabled:opacity-40"
+          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors disabled:opacity-40"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4" />
           Back
         </button>
       </div>

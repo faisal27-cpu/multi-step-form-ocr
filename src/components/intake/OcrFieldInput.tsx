@@ -22,13 +22,13 @@ const OcrFieldInput = forwardRef<HTMLInputElement, OcrFieldInputProps>(
         ref={ref}
         onChange={handleChange}
         className={cn(
-          "w-full h-11 rounded-md px-4 text-[14px] text-[#0A0A0A] dark:text-white",
-          "bg-[#F4F4F5] dark:bg-[#1A1A1A]",
-          "border border-transparent",
+          "w-full h-11 rounded-lg px-4 text-[14px] text-[#0A0A0A] dark:text-white",
+          "bg-white dark:bg-[#111]",
+          "border border-[#E4E4E7] dark:border-[#2A2A2A]",
           "placeholder:text-[#A1A1AA]",
-          "outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/60",
+          "outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500",
           "transition-all duration-150",
-          showOcrHighlight && "border-l-2 border-l-orange-400 pl-3.5",
+          showOcrHighlight && "border-orange-300 bg-orange-50/60 dark:border-orange-800 dark:bg-orange-950/20",
           className
         )}
         {...props}

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { OcrFieldInput } from "./OcrFieldInput";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { step2Schema, type Step2Values } from "@/lib/validations/intake";
@@ -47,6 +47,7 @@ export function StepPersonalInfo() {
   });
 
   const isOcrFilled = (field: string) => (ocrResult[field]?.confidence ?? 0) > 0;
+  const hasAnyOcrData = Object.values(ocrResult).some((f) => f.confidence > 0);
 
   const onSubmit = (values: Step2Values) => {
     updateFields(values);
@@ -54,17 +55,26 @@ export function StepPersonalInfo() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white dark:bg-[#111] rounded-2xl border border-[#E4E4E7] dark:border-[#2A2A2A] p-8 space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-[18px] font-bold text-[#0A0A0A] dark:text-white">Personal information</h2>
-        <p className="text-[13px] text-[#71717A] dark:text-[#A1A1AA] mt-1">
-          Review and confirm the details extracted from your document.
+        <h2 className="font-hero text-[24px] font-bold text-[#0A0A0A] dark:text-white tracking-tight">
+          Your information
+        </h2>
+        <p className="text-[15px] text-[#71717A] dark:text-[#A1A1AA] mt-1.5">
+          Review and confirm the details from your document.
         </p>
       </div>
+
+      {/* OCR auto-fill banner */}
+      {hasAnyOcrData && (
+        <div className="flex items-start gap-2.5 px-4 py-3 rounded-xl bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/50">
+          <Sparkles className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+          <p className="text-[13px] text-orange-700 dark:text-orange-300 leading-relaxed">
+            We auto-filled some fields from your document — review and correct as needed.
+          </p>
+        </div>
+      )}
 
       {/* Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -156,11 +166,11 @@ export function StepPersonalInfo() {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between items-center pt-2">
         <button
           type="button"
           onClick={() => setStep("upload")}
-          className="h-10 px-5 border border-[#E4E4E7] dark:border-[#2A2A2A] text-[#3F3F46] dark:text-[#A1A1AA] hover:bg-[#F4F4F5] dark:hover:bg-[#1A1A1A] text-[14px] font-medium rounded-md transition-colors flex items-center gap-2"
+          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
@@ -169,7 +179,7 @@ export function StepPersonalInfo() {
           type="submit"
           className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
         >
-          Next
+          Continue
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
