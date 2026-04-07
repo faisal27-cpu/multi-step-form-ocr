@@ -31,11 +31,11 @@ export function IntakeLeftPanel({ currentStep }: { currentStep: FormStep }) {
     <div className="flex flex-col h-full bg-[#0F0F0F] px-10 pt-10 pb-8 justify-between overflow-y-auto">
       <div>
         {/* Logo */}
-        <div className="flex items-center gap-2.5 mb-3">
-          <div className="w-8 h-8 rounded-[8px] bg-orange-500 flex items-center justify-center">
-            <ScanText className="w-4 h-4 text-white" />
+        <div className="flex items-center gap-2.5 mb-5">
+          <div className="w-9 h-9 rounded-[9px] bg-orange-500 flex items-center justify-center">
+            <ScanText className="w-4.5 h-4.5 text-white" />
           </div>
-          <span className="font-bold text-[16px] tracking-tight text-white">AUSH Relay</span>
+          <span className="font-bold text-[17px] tracking-tight text-white">AUSH Relay</span>
         </div>
 
         {/* Back to home */}
@@ -49,15 +49,12 @@ export function IntakeLeftPanel({ currentStep }: { currentStep: FormStep }) {
 
         {/* Current step info */}
         <div className="mb-10">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-orange-500 mb-2">
-            Step {stepNum} of 4
-          </p>
           <h2 className="text-[22px] font-bold text-white leading-tight mb-2">{info.title}</h2>
           <p className="text-[14px] text-[#666] leading-relaxed">{info.desc}</p>
         </div>
 
         {/* Step list */}
-        <div className="space-y-0.5">
+        <div className="space-y-0">
           {STEPS.map((step) => {
             const stepIndex = STEP_ORDER.indexOf(step.key);
             const isCompleted = stepIndex < currentIndex;
@@ -67,19 +64,19 @@ export function IntakeLeftPanel({ currentStep }: { currentStep: FormStep }) {
               <div
                 key={step.key}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
-                  isCurrent && "bg-white/[0.05]"
+                  "flex items-center gap-3 pl-3 pr-4 py-2 rounded-lg transition-colors border-l-4",
+                  isCurrent ? "border-orange-500" : "border-transparent"
                 )}
               >
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors",
+                  "w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors",
                   (isCompleted || isCurrent) ? "bg-orange-500" : "bg-white/[0.08]"
                 )}>
                   {isCompleted ? (
-                    <Check className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+                    <Check className="w-3 h-3 text-white" strokeWidth={2.5} />
                   ) : (
                     <step.Icon className={cn(
-                      "w-3.5 h-3.5",
+                      "w-3 h-3",
                       isCurrent ? "text-white" : "text-white/30"
                     )} />
                   )}

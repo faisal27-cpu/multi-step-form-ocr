@@ -29,12 +29,12 @@ function IntakeFormInner() {
   return (
     <div className="flex min-h-[calc(100vh-4px)]">
       {/* Left panel — sticky sidebar (flex child must carry sticky + self-start) */}
-      <div className="hidden lg:flex flex-col w-[38%] shrink-0 sticky top-0 self-start h-screen">
+      <div className="hidden lg:flex flex-col w-[32%] shrink-0 sticky top-0 self-start h-screen">
         <IntakeLeftPanel currentStep={step} />
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 bg-white dark:bg-[#0A0A0A]">
+      <div className="flex-1 bg-white dark:bg-[#0A0A0A] flex flex-col justify-center">
         <div className="w-full max-w-[560px] mx-auto px-6 lg:px-10 py-10">
           <AnimatePresence mode="wait">
             <motion.div
@@ -56,7 +56,7 @@ function IntakeFormInner() {
 function ShellFallback() {
   return (
     <div className="flex min-h-[calc(100vh-4px)]">
-      <div className="hidden lg:block w-[38%] bg-[#0F0F0F] shrink-0" />
+      <div className="hidden lg:block w-[32%] bg-[#0F0F0F] shrink-0" />
       <div className="flex-1 bg-white dark:bg-[#0A0A0A] px-6 lg:px-10 py-10">
         <div className="max-w-[560px] space-y-6">
           <Skeleton className="h-1.5 w-full rounded-full" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu as MenuIcon, Home, FileText, History, Settings, LogOut } from "lucide-react";
 import { MenuContainer } from "@/components/ui/fluid-menu";
 import { createClient } from "@/lib/supabase/client";
@@ -15,6 +15,9 @@ const ITEM_CLS =
 
 export function FloatingNavMenu() {
   const router = useRouter();
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/dashboard/intake")) return null;
 
   const handleSignOut = async () => {
     const supabase = createClient();
