@@ -29,11 +29,9 @@ function IntakeFormInner() {
 
   return (
     <div className="flex min-h-[calc(100vh-4px)]">
-      {/* Left panel — sticky sidebar */}
-      <div className="hidden lg:block w-[38%] shrink-0">
-        <div className="sticky top-0 h-screen">
-          <IntakeLeftPanel currentStep={step} />
-        </div>
+      {/* Left panel — sticky sidebar (flex child must carry sticky + self-start) */}
+      <div className="hidden lg:flex flex-col w-[38%] shrink-0 sticky top-0 self-start h-screen">
+        <IntakeLeftPanel currentStep={step} />
       </div>
 
       {/* Right panel */}

@@ -119,7 +119,8 @@ export function StepUpload() {
           type="button"
           onClick={() => setStep("personal")}
           disabled={!canAdvance || processing}
-          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-all duration-200 flex items-center gap-2 shadow-sm shadow-orange-200/60 disabled:shadow-none"
+          title={!canAdvance || processing ? "Select a file to continue" : undefined}
+          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-all duration-200 flex items-center gap-2 shadow-sm shadow-orange-200/60 disabled:shadow-none"
         >
           Continue
           <ArrowRight className="w-4 h-4" />

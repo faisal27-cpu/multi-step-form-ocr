@@ -105,7 +105,7 @@ export function DocumentDropZone({
             ? "border-2 border-red-300 dark:border-red-800 bg-red-50/50"
             : dragging
               ? "border-2 border-orange-500 bg-[#FFF7ED] scale-[1.01]"
-              : "border-2 border-dashed border-[#E4E4E7] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D]"
+              : "border-2 border-dashed border-[#D1D5DB] dark:border-[#2A2A2A] bg-white dark:bg-[#0D0D0D]"
         )}
         onClick={() => !isLoading && !preview && inputRef.current?.click()}
       >
@@ -197,13 +197,8 @@ export function DocumentDropZone({
 
         {/* Empty state */}
         {!preview && !isLoading && (
-          <div className="flex flex-col items-center justify-center text-center py-12 px-8 gap-5">
-            <div className={cn(
-              "w-16 h-16 rounded-xl flex items-center justify-center transition-colors",
-              dragging ? "bg-orange-500" : "bg-[#0F0F0F] dark:bg-[#1A1A1A]"
-            )}>
-              <Upload className="w-7 h-7 text-orange-400" />
-            </div>
+          <div className="flex flex-col items-center justify-center text-center py-10 px-8 gap-5">
+            <Upload className={cn("w-10 h-10 transition-colors", dragging ? "text-orange-600" : "text-orange-500")} />
 
             <div className="space-y-1.5">
               <p className="text-[20px] font-bold text-[#0A0A0A] dark:text-white leading-tight">
