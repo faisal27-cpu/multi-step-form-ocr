@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { IntakeFormProvider } from "@/context/IntakeFormContext";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { IntakeLeftPanel } from "./IntakeLeftPanel";
-import { StepIndicator } from "./StepIndicator";
 import { StepUpload } from "./StepUpload";
 import { StepPersonalInfo } from "./StepPersonalInfo";
 import { StepAdditionalDetails } from "./StepAdditionalDetails";
@@ -37,11 +36,6 @@ function IntakeFormInner() {
       {/* Right panel */}
       <div className="flex-1 bg-white dark:bg-[#0A0A0A]">
         <div className="w-full max-w-[560px] mx-auto px-6 lg:px-10 py-10">
-          {step !== "success" && (
-            <div className="mb-8">
-              <StepIndicator currentStep={step} />
-            </div>
-          )}
           <AnimatePresence mode="wait">
             <motion.div
               key={step}

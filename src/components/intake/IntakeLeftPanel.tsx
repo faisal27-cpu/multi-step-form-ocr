@@ -1,6 +1,7 @@
 "use client";
 
-import { ScanText, Check, Upload, User, FileText, ClipboardCheck } from "lucide-react";
+import Link from "next/link";
+import { ScanText, Check, Upload, User, FileText, ClipboardCheck, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { FormStep } from "@/types/intake";
 
@@ -30,12 +31,21 @@ export function IntakeLeftPanel({ currentStep }: { currentStep: FormStep }) {
     <div className="flex flex-col h-full bg-[#0F0F0F] px-10 pt-10 pb-8 justify-between overflow-y-auto">
       <div>
         {/* Logo */}
-        <div className="flex items-center gap-2.5 mb-12">
+        <div className="flex items-center gap-2.5 mb-3">
           <div className="w-8 h-8 rounded-[8px] bg-orange-500 flex items-center justify-center">
             <ScanText className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-[16px] tracking-tight text-white">AUSH Relay</span>
         </div>
+
+        {/* Back to home */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors mb-10"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Back to home
+        </Link>
 
         {/* Current step info */}
         <div className="mb-10">
