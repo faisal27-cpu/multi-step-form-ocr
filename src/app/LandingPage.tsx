@@ -218,7 +218,7 @@ export function LandingPage({ isAuthenticated }: Props) {
             <>
               <Link
                 href="/auth/login"
-                className="h-9 px-4 text-[13px] font-medium text-[#3F3F46] dark:text-[#A1A1AA] hover:text-[#0A0A0A] dark:hover:text-white transition-colors"
+                className="h-9 px-4 text-[13px] font-medium text-[#3F3F46] dark:text-[#A1A1AA] hover:text-[#0A0A0A] dark:hover:text-white transition-colors flex items-center"
               >
                 Sign in
               </Link>
