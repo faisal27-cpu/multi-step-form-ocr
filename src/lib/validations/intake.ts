@@ -13,36 +13,39 @@ export const fileUploadSchema = z.object({
 export const step2Schema = z.object({
   fullName: z
     .string()
-    .min(2, 'Full name must be at least 2 characters.')
+    .min(2, 'Please enter your full name (at least 2 characters).')
     .max(100, 'Full name must be 100 characters or fewer.'),
   dateOfBirth: z
     .string()
-    .min(1, 'Date of birth is required.')
+    .min(1, 'Please enter your date of birth.')
     .refine((val) => {
       const date = new Date(val);
       return !isNaN(date.getTime()) && date < new Date();
-    }, 'Please enter a valid date of birth in the past.'),
+    }, 'That date doesn\'t look right — please enter a valid date in the past.'),
   idNumber: z
     .string()
-    .min(3, 'ID number must be at least 3 characters.')
+    .min(3, 'Please enter your ID or document number.')
     .max(50, 'ID number must be 50 characters or fewer.')
     .regex(/^[a-zA-Z0-9\-]+$/, 'ID number may only contain letters, numbers, and hyphens.'),
-  email: z.string().min(1, 'Email is required.').email('Please enter a valid email address.'),
+  email: z
+    .string()
+    .min(1, 'Please enter your email address.')
+    .email('That doesn\'t look like a valid email — double-check and try again.'),
   phone: z
     .string()
-    .min(7, 'Phone number must be at least 7 characters.')
+    .min(7, 'Please enter your phone number.')
     .max(20, 'Phone number must be 20 characters or fewer.')
-    .regex(/^[0-9\s\+\-\(\)]+$/, 'Please enter a valid phone number.'),
+    .regex(/^[0-9\s\+\-\(\)]+$/, 'Please enter a valid phone number (digits, spaces, and +/- allowed).'),
   address: z
     .string()
-    .min(5, 'Address must be at least 5 characters.')
+    .min(5, 'Please enter your address.')
     .max(200, 'Address must be 200 characters or fewer.'),
 });
 
 export const step3Schema = z.object({
   submissionCategory: z.enum(
     ['employment', 'financial', 'medical', 'legal', 'other'],
-    { error: 'Please select a submission category.' }
+    { error: 'Please choose a submission category to continue.' }
   ),
   referenceNumber: z
     .string()

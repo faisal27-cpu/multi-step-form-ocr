@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
-import { OcrFieldInput } from "./OcrFieldInput";
+import { Sparkles } from "lucide-react";
+import { OcrFieldInput, type FieldValidState } from "./OcrFieldInput";
+import { StepNav, type SaveState } from "./StepNav";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { step2Schema, type Step2Values } from "@/lib/validations/intake";
 
@@ -29,13 +31,16 @@ function FieldLabel({ htmlFor, children, ocrFilled }: {
 
 export function StepPersonalInfo() {
   const { state, ocrResult, updateFields, setStep } = useIntakeForm();
+  const [saveState, setSaveState] = useState<SaveState>("idle");
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm<Step2Values>({
     resolver: zodResolver(step2Schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       fullName:    state.fullName,
       dateOfBirth: state.dateOfBirth,
@@ -49,8 +54,20 @@ export function StepPersonalInfo() {
   const isOcrFilled = (field: string) => (ocrResult[field]?.confidence ?? 0) > 0;
   const hasAnyOcrData = Object.values(ocrResult).some((f) => f.confidence > 0);
 
-  const onSubmit = (values: Step2Values) => {
+  /** Derive per-field valid/invalid/default state from RHF touchedFields + errors */
+  const fieldState = (name: keyof Step2Values): FieldValidState => {
+    if (!touchedFields[name]) return "default";
+    if (errors[name]) return "invalid";
+    return "valid";
+  };
+
+  const onSubmit = async (values: Step2Values) => {
+    setSaveState("saving");
     updateFields(values);
+    // Give React one tick to render "Saving…" before transitioning to "Saved ✓"
+    await new Promise<void>((r) => setTimeout(r, 80));
+    setSaveState("saved");
+    await new Promise<void>((r) => setTimeout(r, 500));
     setStep("details");
   };
 
@@ -84,6 +101,7 @@ export function StepPersonalInfo() {
             id="fullName"
             placeholder="Jane Smith"
             ocrFilled={isOcrFilled("fullName")}
+            fieldState={fieldState("fullName")}
             aria-invalid={!!errors.fullName}
             {...register("fullName")}
           />
@@ -98,6 +116,7 @@ export function StepPersonalInfo() {
             id="dateOfBirth"
             type="date"
             ocrFilled={isOcrFilled("dateOfBirth")}
+            fieldState={fieldState("dateOfBirth")}
             aria-invalid={!!errors.dateOfBirth}
             {...register("dateOfBirth")}
           />
@@ -112,6 +131,7 @@ export function StepPersonalInfo() {
             id="idNumber"
             placeholder="AB123456"
             ocrFilled={isOcrFilled("idNumber")}
+            fieldState={fieldState("idNumber")}
             aria-invalid={!!errors.idNumber}
             {...register("idNumber")}
           />
@@ -127,6 +147,7 @@ export function StepPersonalInfo() {
             type="email"
             placeholder="jane@example.com"
             ocrFilled={isOcrFilled("email")}
+            fieldState={fieldState("email")}
             aria-invalid={!!errors.email}
             {...register("email")}
           />
@@ -142,6 +163,7 @@ export function StepPersonalInfo() {
             type="tel"
             placeholder="+1 555 0100"
             ocrFilled={isOcrFilled("phone")}
+            fieldState={fieldState("phone")}
             aria-invalid={!!errors.phone}
             {...register("phone")}
           />
@@ -156,6 +178,7 @@ export function StepPersonalInfo() {
             id="address"
             placeholder="123 Main St, City, State 00000"
             ocrFilled={isOcrFilled("address")}
+            fieldState={fieldState("address")}
             aria-invalid={!!errors.address}
             {...register("address")}
           />
@@ -165,24 +188,12 @@ export function StepPersonalInfo() {
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center pt-2">
-        <button
-          type="button"
-          onClick={() => setStep("upload")}
-          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
-        <button
-          type="submit"
-          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
-        >
-          Continue
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+      <StepNav
+        onBack={() => setStep("upload")}
+        continueLabel="Continue to Details →"
+        continueType="submit"
+        saveState={saveState}
+      />
     </form>
   );
 }

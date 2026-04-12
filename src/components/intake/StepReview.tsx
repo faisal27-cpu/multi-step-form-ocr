@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { toast } from "sonner";
 
@@ -157,7 +157,7 @@ export function StepReview() {
           type="button"
           onClick={handleSubmit}
           disabled={submitting}
-          className="w-full h-12 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[15px] font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          className="w-full min-h-[44px] bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[15px] font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 px-6 py-3"
         >
           {submitting ? (
             <>
@@ -165,10 +165,7 @@ export function StepReview() {
               Submitting…
             </>
           ) : (
-            <>
-              Submit &amp; Generate PDF
-              <ArrowRight className="w-4 h-4" />
-            </>
+            "Submit My Intake Form"
           )}
         </button>
         <p className="text-center text-[12px] text-[#A1A1AA]">
@@ -182,10 +179,9 @@ export function StepReview() {
           type="button"
           onClick={() => setStep("details")}
           disabled={submitting}
-          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors disabled:opacity-40"
+          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors disabled:opacity-40 min-h-[44px] min-w-[44px] px-2 -ml-2"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back
+          ← Back
         </button>
       </div>
     </div>

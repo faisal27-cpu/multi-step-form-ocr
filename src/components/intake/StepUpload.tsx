@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { DocumentDropZone } from "./DocumentDropZone";
+import { StepNav } from "./StepNav";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 
 type OcrStatus = "idle" | "loading" | "success" | "error";
@@ -44,10 +45,10 @@ export function StepUpload() {
     const res = await fetch("/api/intake/upload", { method: "POST", body: formData });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      throw new Error(data.message ?? "Upload failed");
+      throw new Error((data as { message?: string }).message ?? "Upload failed");
     }
     const data = await res.json();
-    return data.storagePath as string;
+    return (data as { storagePath: string }).storagePath;
   };
 
   const runOcr = async (file: File) => {
@@ -112,20 +113,12 @@ export function StepUpload() {
         </button>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center pt-1">
-        <span />
-        <button
-          type="button"
-          onClick={() => setStep("personal")}
-          disabled={!canAdvance || processing}
-          title={!canAdvance || processing ? "Select a file to continue" : undefined}
-          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[14px] font-semibold rounded-md transition-all duration-200 flex items-center gap-2 shadow-sm shadow-orange-200/60 disabled:shadow-none"
-        >
-          Continue
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+      <StepNav
+        continueLabel="Continue to Your Information →"
+        continueType="button"
+        onContinue={() => setStep("personal")}
+        continueDisabled={!canAdvance || processing}
+      />
     </div>
   );
 }

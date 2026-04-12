@@ -52,12 +52,18 @@ function clearDraft(draftId: string) {
   }
 }
 
+// Step order for direction computation
+const STEP_ORDER: FormStep[] = ["upload", "personal", "details", "review", "success"];
+
+export type StepDirection = "forward" | "backward";
+
 // ---------------------------------------------------------------------------
 // Context value interface
 // ---------------------------------------------------------------------------
 interface IntakeFormContextValue {
   state: IntakeFormState;
   step: FormStep;
+  direction: StepDirection;
   draftId: string;
   storagePath: string | null;
   ocrResult: OcrFieldMap;
@@ -113,6 +119,7 @@ export function IntakeFormProvider({ children }: { children: React.ReactNode }) 
   });
 
   const [submissionId, setSubmissionIdState] = useState<string | null>(null);
+  const [direction, setDirection] = useState<StepDirection>("forward");
 
   // Derive current step from URL search param
   const rawStep = searchParams.get("step");
@@ -134,11 +141,14 @@ export function IntakeFormProvider({ children }: { children: React.ReactNode }) 
   // ---------------------------------------------------------------------------
   const setStep = useCallback(
     (next: FormStep) => {
+      const currentIdx = STEP_ORDER.indexOf(step);
+      const nextIdx = STEP_ORDER.indexOf(next);
+      setDirection(nextIdx >= currentIdx ? "forward" : "backward");
       const params = new URLSearchParams(searchParams.toString());
       params.set("step", next);
       router.push(`?${params.toString()}`);
     },
-    [router, searchParams]
+    [router, searchParams, step]
   );
 
   const updateFields = useCallback(
@@ -203,6 +213,7 @@ export function IntakeFormProvider({ children }: { children: React.ReactNode }) 
       value={{
         state,
         step,
+        direction,
         draftId,
         storagePath,
         ocrResult,

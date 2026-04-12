@@ -1,10 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ArrowLeft,
-  ArrowRight,
   Briefcase,
   DollarSign,
   HeartPulse,
@@ -12,6 +11,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { StepNav, type SaveState } from "./StepNav";
 import { useIntakeForm } from "@/hooks/useIntakeForm";
 import { step3Schema, type Step3Values } from "@/lib/validations/intake";
 
@@ -28,15 +28,18 @@ const inputBase =
 
 export function StepAdditionalDetails() {
   const { state, updateFields, setStep } = useIntakeForm();
+  const [saveState, setSaveState] = useState<SaveState>("idle");
 
   const {
     register,
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm<Step3Values>({
     resolver: zodResolver(step3Schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       submissionCategory: state.submissionCategory as Step3Values["submissionCategory"] || undefined,
       referenceNumber: state.referenceNumber,
@@ -46,8 +49,20 @@ export function StepAdditionalDetails() {
 
   const notesValue = watch("notes") ?? "";
 
-  const onSubmit = (values: Step3Values) => {
+  /** Border-left state for plain inputs (not OcrFieldInput) */
+  const inputFieldClass = (name: keyof Pick<Step3Values, "referenceNumber" | "notes">, hasValue: boolean) => {
+    if (!touchedFields[name]) return "";
+    if (errors[name]) return "border-l-[3px] border-l-red-500";
+    if (hasValue) return "border-l-[3px] border-l-green-500 bg-green-50/30 dark:bg-green-950/10";
+    return "";
+  };
+
+  const onSubmit = async (values: Step3Values) => {
+    setSaveState("saving");
     updateFields(values);
+    await new Promise<void>((r) => setTimeout(r, 80));
+    setSaveState("saved");
+    await new Promise<void>((r) => setTimeout(r, 500));
     setStep("review");
   };
 
@@ -82,7 +97,7 @@ export function StepAdditionalDetails() {
                       type="button"
                       onClick={() => field.onChange(value)}
                       className={cn(
-                        "flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 transition-all duration-150",
+                        "flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 transition-all duration-150 min-h-[44px]",
                         selected
                           ? "border-orange-500 bg-orange-50 dark:bg-orange-950/20"
                           : "border-[#E4E4E7] dark:border-[#2A2A2A] hover:border-[#D4D4D8] dark:hover:border-[#3A3A3A] bg-white dark:bg-[#111]"
@@ -126,7 +141,7 @@ export function StepAdditionalDetails() {
           <input
             id="referenceNumber"
             placeholder="REF-001"
-            className={`${inputBase} h-11`}
+            className={cn(`${inputBase} h-11`, inputFieldClass("referenceNumber", !!watch("referenceNumber")))}
             {...register("referenceNumber")}
           />
           {errors.referenceNumber && (
@@ -147,7 +162,7 @@ export function StepAdditionalDetails() {
             id="notes"
             placeholder="Any additional information…"
             rows={4}
-            className={`${inputBase} py-3 resize-none`}
+            className={cn(`${inputBase} py-3 resize-none`, inputFieldClass("notes", !!notesValue))}
             {...register("notes")}
           />
           <div className="flex justify-between items-center mt-1">
@@ -163,24 +178,12 @@ export function StepAdditionalDetails() {
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center pt-2">
-        <button
-          type="button"
-          onClick={() => setStep("personal")}
-          className="flex items-center gap-1.5 text-[14px] font-medium text-[#71717A] hover:text-[#0A0A0A] dark:hover:text-white transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </button>
-        <button
-          type="submit"
-          className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white text-[14px] font-semibold rounded-md transition-colors flex items-center gap-2"
-        >
-          Continue
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+      <StepNav
+        onBack={() => setStep("personal")}
+        continueLabel="Continue to Review →"
+        continueType="submit"
+        saveState={saveState}
+      />
     </form>
   );
 }

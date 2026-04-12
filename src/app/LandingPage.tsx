@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/app/providers";
 import {
   ScanText, Upload, Sparkles, FileCheck2, ShieldCheck,
   FileText, LayoutList, Building2,
